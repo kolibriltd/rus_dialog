@@ -14,5 +14,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:id="@+id/listBooks"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar"
+        android:background="@color/colorWite" />
 </RelativeLayout>

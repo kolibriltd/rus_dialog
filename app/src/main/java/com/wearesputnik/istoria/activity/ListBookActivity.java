@@ -74,6 +74,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 itemAdapter.isViewCount = item.IsViewCount;
                 itemAdapter.pathCoverFile = item.PathCoverFile;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
+                itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
             }
             booksAdapter.notifyDataSetChanged();
@@ -149,6 +150,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 itemAdapter.isViewCount = item.IsViewCount;
                 itemAdapter.pathCoverFile = item.PathCoverFile;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
+                itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
             }
             booksAdapter.notifyDataSetChanged();

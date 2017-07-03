@@ -177,10 +177,10 @@ public class HttpConnectClass {
         }
     }
 
-    public static Books getOneBook(int id_book) {
+    public static Books getOneBook(int id_book, boolean guestFlag) {
         Books result = new Books();
 
-        HttpGet request = new HttpGet(URL + "descript_book?id=" + id_book);
+        HttpGet request = new HttpGet(URL + "descript_book?id=" + id_book + "&flag=" + guestFlag);
         request.addHeader( "app_key" , UILApplication.AppKey);
 
         try {

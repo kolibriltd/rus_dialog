@@ -87,6 +87,8 @@ public class SingupActivity extends BaseActivity {
                     else {
                         IstoriaInfo newIstoriaInfo = new IstoriaInfo();
                         newIstoriaInfo.AppKey = result.userInfoResult.app_key;
+                        newIstoriaInfo.IsViewTwoScreen = false;
+                        newIstoriaInfo.IsTapViewScreen = false;
                         newIstoriaInfo.save();
                     }
                     Intent intent = new Intent(SingupActivity.this, ListBookActivity.class);

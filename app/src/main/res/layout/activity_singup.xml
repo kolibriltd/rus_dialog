@@ -9,13 +9,13 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"
         android:ems="10"
         android:id="@+id/editEmail"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="163dp"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:hint="Email" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -25,7 +25,8 @@
         android:id="@+id/editPassword"
         android:layout_below="@+id/editEmail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="15dp"
+        android:hint="Пароль" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -35,7 +36,8 @@
         android:id="@+id/editConfirmPassword"
         android:layout_below="@+id/editPassword"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="15dp"
+        android:hint="Потверждение пароля" />
 
     <Button
         android:layout_width="wrap_content"
@@ -48,7 +50,7 @@
         android:background="@drawable/bg_buttom"
         android:textColor="@color/colorWite"
         android:textSize="22dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,7 +61,7 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/colorGrey"
         android:textSize="16dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,6 +72,6 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/colorRed"
         android:textSize="18dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="15dp" />
 
 </RelativeLayout>

@@ -140,8 +140,12 @@ public class GuestActivity extends BaseActivity {
                 itemAdapter.isViewCount = item.IsViewCount;
                 itemAdapter.pathCoverFile = item.PathCoverFile;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
+                itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
             }
+            Books itemAdapter = new Books();
+            itemAdapter.flagGuest = true;
+            booksAdapter.add(itemAdapter);
             booksAdapter.notifyDataSetChanged();
             id_book = Integer.parseInt(bookModelList.get(bookModelList.size() - 1).IdDbServer);
             new getGuestBooks().execute();

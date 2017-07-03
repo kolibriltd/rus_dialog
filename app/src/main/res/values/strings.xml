@@ -16,4 +16,6 @@
     <string name="singup">ЗАРЕГИСТРИРОВАТСЯ</string>
     <string name="singup_activ">РЕГИСТРАЦИЯ</string>
     <string name="singup_exsit">уже есть аккаунт</string>
+
+    <string name="guest_item_list">Хотите получить больше историй?</string>
 </resources>

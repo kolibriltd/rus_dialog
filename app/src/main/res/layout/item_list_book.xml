@@ -3,75 +3,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/imageViewCover"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@mipmap/icon_app"
-        android:scaleType="centerCrop" />
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:paddingBottom="10dp"
-        android:background="@drawable/gradient_baground"
-        android:layout_alignBottom="@+id/imageViewCover"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/imageViewCover">
+        android:layout_height="wrap_content"
+        android:id="@+id/relItemListBook">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/txtAuthor"
-            android:textSize="16dp"
-            android:textColor="@color/background_floating_material_light"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="16dp" />
-
-        <com.wearesputnik.istoria.helpers.TextViewGeorgia
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/txtName"
-            android:textSize="18dp"
-            android:textColor="@color/background_floating_material_light"
-            android:layout_above="@+id/txtAuthor"
-            android:layout_alignStart="@+id/txtAuthor"
-            android:layout_marginBottom="8dp"
-            android:textStyle="italic" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/imageViewCover"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/icon_app"
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:layout_alignTop="@+id/txtName"
-            android:layout_alignBottom="@+id/txtAuthor">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
-                android:src="@mipmap/eye"
-                android:layout_alignParentEnd="false"
-                android:layout_marginBottom="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/gradient_baground"
+            android:layout_alignBottom="@+id/imageViewCover"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/imageViewCover">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="177"
-                android:id="@+id/txtEve"
-                android:textColor="@color/background_floating_material_light"
+                android:text="New Text"
+                android:id="@+id/txtAuthor"
                 android:textSize="16dp"
-                android:gravity="center_horizontal"
-                android:layout_below="@+id/imageView3"
-                android:layout_centerHorizontal="true" />
-        </RelativeLayout>
+                android:textColor="@color/background_floating_material_light"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="16dp" />
 
+            <com.wearesputnik.istoria.helpers.TextViewGeorgia
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtName"
+                android:textSize="18dp"
+                android:textColor="@color/background_floating_material_light"
+                android:layout_above="@+id/txtAuthor"
+                android:layout_alignStart="@+id/txtAuthor"
+                android:layout_marginBottom="8dp"
+                android:textStyle="italic" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignTop="@+id/txtName"
+                android:layout_alignBottom="@+id/txtAuthor">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView3"
+                    android:src="@mipmap/eye"
+                    android:layout_alignParentEnd="false"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="177"
+                    android:id="@+id/txtEve"
+                    android:textColor="@color/background_floating_material_light"
+                    android:textSize="16dp"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/imageView3"
+                    android:layout_centerHorizontal="true" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relItemListBook"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorBacground"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:id="@+id/relItemGuestBook">
+
+        <com.wearesputnik.istoria.helpers.TextViewGeorgia
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guest_item_list"
+            android:id="@+id/textView11"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/colorWite"
+            android:textSize="18dp"
+            android:gravity="center_horizontal" />
     </RelativeLayout>
 
 </RelativeLayout>

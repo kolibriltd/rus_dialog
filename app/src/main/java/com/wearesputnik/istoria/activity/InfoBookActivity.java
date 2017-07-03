@@ -38,6 +38,7 @@ public class InfoBookActivity extends BaseActivity {
     private DisplayImageOptions options;
     BookModel bookModelOne;
     boolean twoScrean;
+    boolean guestFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class InfoBookActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             id_book = bundle.getInt("id_book");
+            guestFlag = bundle.getBoolean("guestFlag");
         }
 
         IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
@@ -231,7 +233,7 @@ public class InfoBookActivity extends BaseActivity {
 
         @Override
         protected Books doInBackground(String... strings) {
-            Books result = httpConect.getOneBook(id_book);
+            Books result = httpConect.getOneBook(id_book, guestFlag);
             return result;
         }
 

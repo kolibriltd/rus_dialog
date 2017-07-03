@@ -21,6 +21,7 @@ public class Books {
     public int isViewCount;
     public String textInfoList;
     public String pathCoverFileStorage;
+    public boolean flagGuest;
 
     public static Books parseJson(JSONObject json) {
         Books result = new Books();

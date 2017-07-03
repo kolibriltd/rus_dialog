@@ -22,7 +22,9 @@
             android:id="@+id/btnLogin"
             android:layout_weight="1"
             android:background="@color/colorBacground"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
         <Button
             android:layout_width="0dp"
@@ -31,7 +33,9 @@
             android:id="@+id/btnSingUp"
             android:layout_weight="1"
             android:background="@color/colorBacground"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
     </LinearLayout>
 
     <ListView
