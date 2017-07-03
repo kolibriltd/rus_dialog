@@ -18,6 +18,7 @@ public class SplashActivity extends AppCompatActivity {
         IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
         if (istoriaInfo != null) {
             if (!istoriaInfo.AppKey.isEmpty()) {
+                UILApplication.AppKey = istoriaInfo.AppKey;
                 Intent i = new Intent(SplashActivity.this, ListBookActivity.class);
                 startActivity(i);
                 finish();

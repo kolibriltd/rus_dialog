@@ -65,6 +65,9 @@ public class InfoBookActivity extends BaseActivity {
         relInfoScreen2.setVisibility(View.GONE);
 
         options = new DisplayImageOptions.Builder()
+            .showImageOnLoading(R.mipmap.icon_app)
+            .showImageForEmptyUri(R.mipmap.icon_app)
+            .showImageOnFail(R.mipmap.icon_app)
             .cacheInMemory(true)
             .cacheOnDisk(true)
             .considerExifParams(true)

@@ -145,6 +145,7 @@ public class HttpConnectClass {
         List<Books> result = new ArrayList<>();
 
         HttpGet request = new HttpGet(URL + "list_books?id=" + id_book);
+        request.addHeader( "app_key" , UILApplication.AppKey);
 
         try {
             HttpResponse response = http.execute(request);
@@ -180,6 +181,7 @@ public class HttpConnectClass {
         Books result = new Books();
 
         HttpGet request = new HttpGet(URL + "descript_book?id=" + id_book);
+        request.addHeader( "app_key" , UILApplication.AppKey);
 
         try {
             HttpResponse response = http.execute(request);
