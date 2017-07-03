@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Чат истории</string>
+    <string name="info_read">ЧИТАТЬ</string>
+    <string name="info_next">ДАЛЕЕ</string>
+    <string name="info_hedear">Это художественное\nпроизведение.</string>
+    <string name="info_center">Все\nперсонажи вымешленные.\nВсе\nсовпадения случайны.</string>
+
+    <string name="font_georgia">fonts/georgiai.ttf</string>
+
+    <string name="ok">OK</string>
+    <string name="permission_storage_rationale">Storage permission is needed to show the camera preview.</string>
+    <string name="permision_available_storage">Storage Permission has been granted. Preview can now be opened.</string>
+    <string name="permissions_not_granted">Permissions were not granted.</string>
+
+    <string name="login">ВОЙТИ</string>
+    <string name="singup">ЗАРЕГИСТРИРОВАТСЯ</string>
+    <string name="singup_activ">РЕГИСТРАЦИЯ</string>
+    <string name="singup_exsit">уже есть аккаунт</string>
+</resources>
