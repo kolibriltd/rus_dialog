@@ -7,6 +7,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -57,6 +60,18 @@ public class SingupActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Intent intent = new Intent(SingupActivity.this, GuestActivity.class);
+            startActivity(intent);
+            finish();
+            return false;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
     class getSignUpTask extends AsyncTask<String, String, ResultInfo> {
         Dialog dialog;
         protected void onPreExecute() {
@@ -83,6 +98,7 @@ public class SingupActivity extends BaseActivity {
                     IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
                     if (istoriaInfo != null) {
                         istoriaInfo.AppKey = result.userInfoResult.app_key;
+                        istoriaInfo.save();
                     }
                     else {
                         IstoriaInfo newIstoriaInfo = new IstoriaInfo();

@@ -2,13 +2,18 @@ package com.wearesputnik.istoria.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,12 +28,14 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.activity.GuestActivity;
 import com.wearesputnik.istoria.activity.InfoBookActivity;
+import com.wearesputnik.istoria.activity.ListBookActivity;
 import com.wearesputnik.istoria.activity.SingupActivity;
 import com.wearesputnik.istoria.helpers.Books;
 import com.wearesputnik.istoria.helpers.HttpConnectClass;
 import com.wearesputnik.istoria.models.BookModel;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +47,7 @@ public class BooksAdapter extends ArrayAdapter<Books> {
     Context context;
     private DisplayImageOptions options;
     boolean guestFlag;
+    Bitmap m_currentBitmap;
 
     public BooksAdapter (Context context, boolean guestFlag) {
         super(context, 0);
@@ -156,7 +164,30 @@ public class BooksAdapter extends ArrayAdapter<Books> {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
-            String patch = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Istoria", null);
+            int widthBit = 0;
+            int heightBit = 0;
+
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int widthScrin = size.x;
+
+            int bitWidth = bitmap.getWidth();
+            int bitHeight = bitmap.getHeight();
+            if (widthScrin < bitWidth) {
+                widthBit = widthScrin;
+                int widthBitProc = ((bitWidth - widthBit)*100)/bitWidth;
+                heightBit = (bitHeight*(100-widthBitProc))/100;
+            }
+            else {
+                widthBit = bitWidth;
+                heightBit = bitHeight;
+            }
+
+            Bitmap resized = Bitmap.createScaledBitmap(bitmap, widthBit, heightBit, true);
+
+            String patch = MediaStore.Images.Media.insertImage(context.getContentResolver(), resized, "Istoria", null);
             return Uri.parse(patch);
         }
         catch (Exception ex) {

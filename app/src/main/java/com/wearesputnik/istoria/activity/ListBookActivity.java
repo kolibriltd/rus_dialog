@@ -2,6 +2,8 @@ package com.wearesputnik.istoria.activity;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +22,7 @@ import com.wearesputnik.istoria.BaseActivity;
 import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.adapters.BooksAdapter;
 import com.wearesputnik.istoria.helpers.Books;
+import com.wearesputnik.istoria.helpers.ResultInfo;
 import com.wearesputnik.istoria.models.BookModel;
 
 import java.util.List;
@@ -160,7 +164,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
         }
     }
 
-    class getBooks extends AsyncTask<String, String, List<Books>> {
+    class getBooks extends AsyncTask<String, String, ResultInfo> {
         Dialog dialog;
         protected void onPreExecute() {
             super.onPreExecute();
@@ -173,30 +177,46 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
         }
 
         @Override
-        protected List<Books> doInBackground(String... strings) {
-            List<Books> result = httpConect.getBooks(id_book);
+        protected ResultInfo doInBackground(String... strings) {
+            ResultInfo result = httpConect.getBooks(id_book, ListBookActivity.this);
             return result;
         }
 
-        protected void onPostExecute(List<Books> result) {
+        protected void onPostExecute(ResultInfo result) {
             if (result != null) {
-                for (Books item : result) {
+                if (result.status == 0) {
+                    for (Books item : result.booksList) {
 
-                    BookModel bookModel = new BookModel();
-                    bookModel.IdDbServer = item.id_book + "";
-                    bookModel.Name = item.name;
-                    bookModel.Author = item.author;
-                    bookModel.Description = item.description;
-                    bookModel.IsViewCount = item.isViewCount;
-                    bookModel.PathCoverFile = item.pathCoverFile;
-                    bookModel.save();
+                        BookModel bookModel = new BookModel();
+                        bookModel.IdDbServer = item.id_book + "";
+                        bookModel.Name = item.name;
+                        bookModel.Author = item.author;
+                        bookModel.Description = item.description;
+                        bookModel.IsViewCount = item.isViewCount;
+                        bookModel.PathCoverFile = item.pathCoverFile;
+                        bookModel.save();
 
+                        if (getPermission) {
+                            booksAdapter.add(item);
+                        }
+                    }
                     if (getPermission) {
-                        booksAdapter.add(item);
+                        booksAdapter.notifyDataSetChanged();
                     }
                 }
-                if (getPermission) {
-                    booksAdapter.notifyDataSetChanged();
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ListBookActivity.this);
+                    builder.setTitle("Ошибка")
+                            .setMessage(result.error)
+                            .setCancelable(false)
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
 
             }

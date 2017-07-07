@@ -135,6 +135,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:id="@+id/relEmty"></RelativeLayout>
+        android:id="@+id/relEmty"
+        android:background="@color/colorWite"></RelativeLayout>
 
 </LinearLayout>

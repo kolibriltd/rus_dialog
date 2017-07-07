@@ -18,4 +18,6 @@
     <string name="singup_exsit">уже есть аккаунт</string>
 
     <string name="guest_item_list">Хотите получить больше историй?</string>
+
+    <string name="raiting_text">Оцените историю</string>
 </resources>

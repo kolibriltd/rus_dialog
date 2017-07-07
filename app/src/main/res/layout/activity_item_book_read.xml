@@ -9,13 +9,14 @@
         android:id="@+id/toolbar"/>
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listTextBook"
         android:layout_below="@+id/toolbar"
         android:layout_alignParentStart="true"
         android:background="@color/foreground_material_dark"
-        android:layout_alignBottom="@+id/relButton"/>
+        android:layout_alignBottom="@+id/relButton"
+        android:layout_alignParentEnd="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -117,5 +118,49 @@
         android:layout_below="@+id/toolbar"
         android:id="@+id/relListViewClick"
         android:layout_above="@+id/relButton"></RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:background="#7b000000">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorWite"
+            android:padding="16dp">
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:layout_below="@+id/textView12"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/raiting_text"
+                android:id="@+id/textView12"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_next"
+                android:id="@+id/textView13"
+                android:layout_below="@+id/ratingBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/colorRed"
+                android:textSize="18dp" />
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

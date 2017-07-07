@@ -143,9 +143,9 @@ public class GuestActivity extends BaseActivity {
                 itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
             }
-            Books itemAdapter = new Books();
-            itemAdapter.flagGuest = true;
-            booksAdapter.add(itemAdapter);
+            Books itemAdapterEmty = new Books();
+            itemAdapterEmty.flagGuest = true;
+            booksAdapter.add(itemAdapterEmty);
             booksAdapter.notifyDataSetChanged();
             id_book = Integer.parseInt(bookModelList.get(bookModelList.size() - 1).IdDbServer);
             new getGuestBooks().execute();
@@ -189,6 +189,9 @@ public class GuestActivity extends BaseActivity {
                     }
                 }
                 if (getPermission) {
+                    Books itemAdapterEmty = new Books();
+                    itemAdapterEmty.flagGuest = true;
+                    booksAdapter.add(itemAdapterEmty);
                     booksAdapter.notifyDataSetChanged();
                 }
 

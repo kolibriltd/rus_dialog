@@ -1,10 +1,8 @@
 package com.wearesputnik.istoria.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -134,12 +132,12 @@ public class ItemBookReadActivity extends BaseActivity {
                 textInfoListSort.get(i).flags = true;
                 itemBookAdapter.add(textInfoListSort.get(i));
             }
-            if (tapCount > 4) {
+            /*if (tapCount > 4) {
                 TextInfo empty = new TextInfo();
-                empty.flags = true;
+                empty.flags = false;
                 empty.emptyFlag = true;
                 itemBookAdapter.add(empty);
-            }
+            }*/
             itemBookAdapter.notifyDataSetChanged();
             scrollMyListViewToBottom();
             if (bookModelOne.TapStooBool) {
@@ -181,18 +179,19 @@ public class ItemBookReadActivity extends BaseActivity {
             relListViewClick.setVisibility(View.GONE);
         }
         if (tapCount < countText) {
-            if (tapCount >= 4) {
+            /*if (tapCount >= 4) {
                 if (itemBookAdapter.getItem(itemBookAdapter.getCount() - 1).emptyFlag) {
                     itemBookAdapter.remove(itemBookAdapter.getItem(itemBookAdapter.getCount() - 1));
                 }
-            }
+            }*/
 
             itemBookAdapter.add(textInfoListSort.get(tapCount));
-            if (tapCount > 4) {
+            /*if (tapCount > 4) {
                 TextInfo empty = new TextInfo();
                 empty.emptyFlag = true;
+                empty.flags = false;
                 itemBookAdapter.add(empty);
-            }
+            }*/
             itemBookAdapter.notifyDataSetChanged();
             tapCount++;
             bookModelOne.IsViewTapCount = tapCount;
@@ -202,11 +201,16 @@ public class ItemBookReadActivity extends BaseActivity {
     }
 
     private void scrollMyListViewToBottom() {
-        listTextBook.post(new Runnable() {
+
+        listTextBook.postOnAnimation(new Runnable() {
             @Override
             public void run() {
                 // Select the last row so it will scroll into view...
-                listTextBook.smoothScrollToPosition(itemBookAdapter.getCount() - 1);
+                //listTextBook.smoothScrollToPosition(itemBookAdapter.getCount() - 1);
+                int h1 = listTextBook.getHeight();
+                int h2 = listTextBook.getHeight();
+
+                listTextBook.smoothScrollToPositionFromTop(itemBookAdapter.getCount() - 1, h1/2 - h2/2, 1500);
             }
         });
     }

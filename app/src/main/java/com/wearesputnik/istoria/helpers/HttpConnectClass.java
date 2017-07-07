@@ -1,6 +1,8 @@
 package com.wearesputnik.istoria.helpers;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -29,8 +31,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HttpConnectClass {
+    /*
     public static final String URL = "http://www.wearesputnik.com/knigs/index.php/api/";
-    public static final String URL_IMAGE = "http://www.wearesputnik.com/knigs/protected";
+    public static final String URL_IMAGE = "http://www.wearesputnik.com/knigs/protected";*/
+    public static final String URL = "http://www.wearesputnik.com/development.knigs/index.php/api/";
+    public static final String URL_IMAGE = "http://www.wearesputnik.com/development.knigs/protected";
     public static HttpClient http;
 
     private HttpConnectClass() {
@@ -92,7 +97,6 @@ public class HttpConnectClass {
             request.setEntity(formEntity);
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("GET_CREATE", jsonStr);
 
             JSONObject jsonObject = new JSONObject(jsonStr);
             result = ResultInfo.parseJson(jsonObject, "login");
@@ -114,7 +118,7 @@ public class HttpConnectClass {
         try {
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("GET_BOOKS", jsonStr);
+            Log.e("GUEST", jsonStr);
 
             if (!jsonStr.equals("")) {
                 JSONObject jsonObject = new JSONObject(jsonStr);
@@ -141,34 +145,28 @@ public class HttpConnectClass {
         }
     }
 
-    public static List<Books> getBooks(int id_book) {
-        List<Books> result = new ArrayList<>();
+    public static ResultInfo getBooks(int id_book, Context context) {
+        ResultInfo result = new ResultInfo();
+        PackageInfo packageInfo = null;
+
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         HttpGet request = new HttpGet(URL + "list_books?id=" + id_book);
-        request.addHeader( "app_key" , UILApplication.AppKey);
+        request.addHeader( "app_key", UILApplication.AppKey);
+        request.addHeader( "version_code", packageInfo.versionCode + "");
 
         try {
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("GET_BOOKS", jsonStr);
 
-            if (!jsonStr.equals("")) {
-                JSONObject jsonObject = new JSONObject(jsonStr);
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
-                if (jsonArray.length() > 0) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        Books item = Books.parseJson(jsonArray.getJSONObject(i));
-                        if (item != null) {
-                            result.add(item);
-                        }
-                    }
-                } else {
-                    return null;
-                }
-            }
-            else {
-                return null;
-            }
+            JSONObject jsonObject = new JSONObject(jsonStr);
+            result = ResultInfo.parseJson(jsonObject, "listBook");
+
             return result;
         }
         catch (Exception ex) {
@@ -186,32 +184,6 @@ public class HttpConnectClass {
         try {
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("GET_ONE_BOOKS", jsonStr);
-
-            if (!jsonStr.equals("")) {
-                JSONObject jsonObject = new JSONObject(jsonStr);
-                result = Books.parseJson(jsonObject.getJSONObject("result"));
-            }
-            else {
-                return null;
-            }
-            return result;
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    public static Books getItemBook(int id_book) {
-        Books result = new Books();
-
-        HttpGet request = new HttpGet(URL + "item_book_txt?id=" + id_book);
-
-        try {
-            HttpResponse response = http.execute(request);
-            String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("GET_ITEM_BOOKS", jsonStr);
 
             if (!jsonStr.equals("")) {
                 JSONObject jsonObject = new JSONObject(jsonStr);
@@ -232,11 +204,12 @@ public class HttpConnectClass {
         Books result = new Books();
 
         HttpGet request = new HttpGet(URL + "view_inc_count?id=" + id_book);
+        request.addHeader( "app_key", UILApplication.AppKey);
 
         try {
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("SET_VIEW_BOOK", jsonStr);
+
             if (!jsonStr.equals("")) {
                 JSONObject jsonObject = new JSONObject(jsonStr);
                 result = Books.parseJson(jsonObject.getJSONObject("result"));
@@ -256,11 +229,12 @@ public class HttpConnectClass {
         List<Books> result = new ArrayList<>();
 
         HttpGet request = new HttpGet(URL + "get_view_inc_count");
+        request.addHeader( "app_key", UILApplication.AppKey);
 
         try {
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("SET_VIEW_BOOK", jsonStr);
+
             if (!jsonStr.equals("")) {
                 JSONObject jsonObject = new JSONObject(jsonStr);
                 JSONArray jsonArray = jsonObject.getJSONArray("result");
