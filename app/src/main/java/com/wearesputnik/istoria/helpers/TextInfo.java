@@ -14,6 +14,9 @@ public class TextInfo {
     public String metka;
     public boolean flags;
     public boolean emptyFlag;
+    public String imgPeopleA;
+    public String imgPeopleB;
+    public String videoPeopleB;
 
     public static TextInfo parseJson(JSONObject json) {
         TextInfo result = new TextInfo();
@@ -35,6 +38,15 @@ public class TextInfo {
             }
             if (json.has("metka")) {
                 result.metka = json.getString("metka");
+            }
+            if (json.has("imgPeopleA")) {
+                result.imgPeopleA = json.getString("imgPeopleA");
+            }
+            if (json.has("imgPeopleB")) {
+                result.imgPeopleB = json.getString("imgPeopleB");
+            }
+            if (json.has("videoPeopleB")) {
+                result.videoPeopleB = json.getString("videoPeopleB");
             }
             result.flags = false;
             result.emptyFlag = false;

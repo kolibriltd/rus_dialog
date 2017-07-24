@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.activeandroid.query.Select;
 import com.wearesputnik.istoria.UILApplication;
+import com.wearesputnik.istoria.models.IstoriaInfo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -43,6 +45,12 @@ public class HttpConnectClass {
         ClientConnectionManager mgr = http.getConnectionManager();
         HttpParams params = http.getParams();
         http = new DefaultHttpClient(new ThreadSafeClientConnManager(params, mgr.getSchemeRegistry()), params);
+        IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
+        if (istoriaInfo != null) {
+            if (istoriaInfo.AppKey != null) {
+                UILApplication.AppKey = istoriaInfo.AppKey;
+            }
+        }
     }
 
     public static HttpConnectClass getInstance() {
@@ -248,6 +256,31 @@ public class HttpConnectClass {
                 } else {
                     return null;
                 }
+            }
+            else {
+                return null;
+            }
+            return result;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Books setRatingBook(int id_book, String rating) {
+        Books result = new Books();
+
+        HttpGet request = new HttpGet(URL + "set_raiting_book?id=" + id_book + "&rating=" + rating);
+        request.addHeader( "app_key", UILApplication.AppKey);
+
+        try {
+            HttpResponse response = http.execute(request);
+            String jsonStr = streamToString(response.getEntity().getContent());
+
+            if (!jsonStr.equals("")) {
+                JSONObject jsonObject = new JSONObject(jsonStr);
+                result = Books.parseJson(jsonObject.getJSONObject("result"));
             }
             else {
                 return null;

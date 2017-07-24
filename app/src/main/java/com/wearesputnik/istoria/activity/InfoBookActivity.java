@@ -31,7 +31,7 @@ import com.wearesputnik.istoria.models.BookModel;
 import com.wearesputnik.istoria.models.IstoriaInfo;
 
 public class InfoBookActivity extends BaseActivity {
-    TextView  txtDescription, txtAuthor, txtName, txtEve, btnNext;
+    TextView  txtDescription, txtAuthor, txtName, txtEve, btnNext, txtRaiting;
     int id_book;
     RelativeLayout relInfoScreen1, relInfoScreen2, relGradient;
     ImageView imageViewCoverInfo;
@@ -58,6 +58,7 @@ public class InfoBookActivity extends BaseActivity {
         txtAuthor = (TextView) findViewById(R.id.txtAuthor);
         txtName = (TextView) findViewById(R.id.txtName);
         txtEve = (TextView) findViewById(R.id.txtEve);
+        txtRaiting = (TextView) findViewById(R.id.txtRaiting);
         btnNext = (TextView) findViewById(R.id.btnNext);
         imageViewCoverInfo = (ImageView) findViewById(R.id.imageViewCoverInfo);
         relGradient = (RelativeLayout) findViewById(R.id.relGradient);
@@ -66,9 +67,9 @@ public class InfoBookActivity extends BaseActivity {
         relInfoScreen2.setVisibility(View.GONE);
 
         options = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.mipmap.icon_app)
-            .showImageForEmptyUri(R.mipmap.icon_app)
-            .showImageOnFail(R.mipmap.icon_app)
+            .showImageOnLoading(R.mipmap.null_foto_info)
+            .showImageForEmptyUri(R.mipmap.null_foto_info)
+            .showImageOnFail(R.mipmap.null_foto_info)
             .cacheInMemory(true)
             .cacheOnDisk(true)
             .considerExifParams(true)
@@ -118,6 +119,7 @@ public class InfoBookActivity extends BaseActivity {
         itemBooks.pathCoverFile = bookModelOne.PathCoverFile;
         itemBooks.isViewCount = bookModelOne.IsViewCount;
         itemBooks.pathCoverFileStorage = bookModelOne.PathCoverFileStorage;
+        itemBooks.raiting = bookModelOne.Raiting;
         ViewBookOne(itemBooks);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +192,7 @@ public class InfoBookActivity extends BaseActivity {
         txtAuthor.setText(result.author);
         txtName.setText(result.name);
         txtEve.setText(result.isViewCount + "");
+        txtRaiting.setText(result.raiting);
         if (result.pathCoverFileStorage != null) {
             imageViewCoverInfo.setImageURI(Uri.parse(result.pathCoverFileStorage));
         } else if (result.pathCoverFile != null) {

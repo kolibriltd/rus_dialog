@@ -55,9 +55,9 @@ public class BooksAdapter extends ArrayAdapter<Books> {
         this.guestFlag = guestFlag;
         this.context = context;
         options = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.mipmap.icon_app)
-            .showImageForEmptyUri(R.mipmap.icon_app)
-            .showImageOnFail(R.mipmap.icon_app)
+            .showImageOnLoading(R.mipmap.null_foto)
+            .showImageForEmptyUri(R.mipmap.null_foto)
+            .showImageOnFail(R.mipmap.null_foto)
             .cacheInMemory(true)
             .cacheOnDisk(true)
             .considerExifParams(true)
@@ -76,6 +76,7 @@ public class BooksAdapter extends ArrayAdapter<Books> {
             holder.txtName = (TextView) view.findViewById(R.id.txtName);
             holder.txtAuthor = (TextView) view.findViewById(R.id.txtAuthor);
             holder.txtEve = (TextView) view.findViewById(R.id.txtEve);
+            holder.txtRaiting = (TextView) view.findViewById(R.id.txtRaiting);
             holder.imageViewCover = (ImageView) view.findViewById(R.id.imageViewCover);
             holder.relItemListBook = (RelativeLayout) view.findViewById(R.id.relItemListBook);
             holder.relItemGuestBook = (RelativeLayout) view.findViewById(R.id.relItemGuestBook);
@@ -101,40 +102,41 @@ public class BooksAdapter extends ArrayAdapter<Books> {
             holder.txtName.setText(item.name);
             holder.txtAuthor.setText(item.author);
             holder.txtEve.setText(item.isViewCount + "");
+            holder.txtRaiting.setText(item.raiting);
 
             if (item.pathCoverFileStorage != null) {
                 holder.imageViewCover.setImageURI(Uri.parse(item.pathCoverFileStorage));
             } else if (item.pathCoverFile != null) {
                 String url_img = HttpConnectClass.URL_IMAGE + item.pathCoverFile;
                 ImageLoader.getInstance()
-                        .displayImage(url_img, holder.imageViewCover, options, new SimpleImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String imageUri, View view) {
+                    .displayImage(url_img, holder.imageViewCover, options, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
 
-                            }
+                        }
 
-                            @Override
-                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 
-                            }
+                        }
 
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                if (item.pathCoverFileStorage == null) {
-                                    BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
-                                    bookModelOne.PathCoverFileStorage = getImageUri(context, loadedImage).toString();
-                                    if (bookModelOne.PathCoverFileStorage != null || !bookModelOne.PathCoverFileStorage.trim().equals("null")) {
-                                        item.pathCoverFileStorage = bookModelOne.PathCoverFileStorage;
-                                        bookModelOne.save();
-                                    }
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            if (item.pathCoverFileStorage == null) {
+                                BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
+                                bookModelOne.PathCoverFileStorage = getImageUri(context, loadedImage).toString();
+                                if (bookModelOne.PathCoverFileStorage != null || !bookModelOne.PathCoverFileStorage.trim().equals("null")) {
+                                    item.pathCoverFileStorage = bookModelOne.PathCoverFileStorage;
+                                    bookModelOne.save();
                                 }
                             }
-                        }, new ImageLoadingProgressListener() {
-                            @Override
-                            public void onProgressUpdate(String imageUri, View view, int current, int total) {
+                        }
+                    }, new ImageLoadingProgressListener() {
+                        @Override
+                        public void onProgressUpdate(String imageUri, View view, int current, int total) {
 
-                            }
-                        });
+                        }
+                    });
             }
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +157,7 @@ public class BooksAdapter extends ArrayAdapter<Books> {
         TextView txtAuthor;
         TextView txtName;
         TextView txtEve;
+        TextView txtRaiting;
         ImageView imageViewCover;
         RelativeLayout relItemListBook, relItemGuestBook;
     }

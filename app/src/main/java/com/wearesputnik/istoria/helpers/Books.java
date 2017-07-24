@@ -19,6 +19,7 @@ public class Books {
     public String description;
     public String pathCoverFile;
     public int isViewCount;
+    public String raiting;
     public String textInfoList;
     public String pathCoverFileStorage;
     public boolean flagGuest;
@@ -38,6 +39,9 @@ public class Books {
             }
             if (json.has("is_view_count")) {
                 result.isViewCount = json.getInt("is_view_count");
+            }
+            if (json.has("raiting")) {
+                result.raiting = json.getString("raiting");
             }
             if (json.has("text")) {
                 result.textInfoList = json.getString("text");

@@ -78,6 +78,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 itemAdapter.isViewCount = item.IsViewCount;
                 itemAdapter.pathCoverFile = item.PathCoverFile;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
+                itemAdapter.raiting = item.Raiting;
                 itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
             }
@@ -153,6 +154,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 itemAdapter.author = item.Author;
                 itemAdapter.isViewCount = item.IsViewCount;
                 itemAdapter.pathCoverFile = item.PathCoverFile;
+                itemAdapter.raiting = item.Raiting;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
                 itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
@@ -193,6 +195,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                         bookModel.Author = item.author;
                         bookModel.Description = item.description;
                         bookModel.IsViewCount = item.isViewCount;
+                        bookModel.Raiting = item.raiting;
                         bookModel.PathCoverFile = item.pathCoverFile;
                         bookModel.save();
 
@@ -238,6 +241,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
 
                     BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
                     bookModelOne.IsViewCount = item.isViewCount;
+                    bookModelOne.Raiting = item.raiting;
                     bookModelOne.save();
                 }
             }

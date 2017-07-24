@@ -28,6 +28,8 @@ public class BookModel extends Model{
     public Integer IsViewCount;
     @Column(name = "IsViewTapCount")
     public Integer IsViewTapCount;
+    @Column(name = "Raiting")
+    public String Raiting;
     @Column(name = "PathCoverFile")
     public String PathCoverFile;
     @Column(name = "PathCoverFileStorage")
@@ -36,5 +38,8 @@ public class BookModel extends Model{
     public String TimerStopMin;
     @Column(name = "TapStooBool")
     public boolean TapStooBool;
+    @Column(name = "TypeId")
+    public boolean TypeId;
+
 
 }

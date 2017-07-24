@@ -122,8 +122,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="false"
-        android:background="#7b000000">
+        android:clickable="true"
+        android:background="#7b000000"
+        android:id="@+id/relRaiting"
+        android:layout_below="@+id/toolbar"
+        android:contextClickable="true"
+        android:longClickable="true"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -139,7 +144,8 @@
                 android:id="@+id/ratingBar"
                 android:layout_below="@+id/textView12"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:theme="@style/RatingBar" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -154,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/info_next"
-                android:id="@+id/textView13"
+                android:id="@+id/btnNext"
                 android:layout_below="@+id/ratingBar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"

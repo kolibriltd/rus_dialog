@@ -14,7 +14,7 @@
             android:id="@+id/imageViewCover"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/icon_app"
+            android:src="@mipmap/null_foto"
             android:scaleType="centerCrop" />
 
         <RelativeLayout
@@ -55,15 +55,15 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
                 android:layout_alignTop="@+id/txtName"
-                android:layout_alignBottom="@+id/txtAuthor">
+                android:layout_alignBottom="@+id/txtAuthor"
+                android:paddingBottom="3dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView3"
                     android:src="@mipmap/eye"
-                    android:layout_alignParentEnd="false"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_alignParentRight="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -72,9 +72,30 @@
                     android:id="@+id/txtEve"
                     android:textColor="@color/background_floating_material_light"
                     android:textSize="16dp"
-                    android:gravity="center_horizontal"
-                    android:layout_below="@+id/imageView3"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="-5dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2"
+                    android:src="@mipmap/ic_rating"
+                    android:layout_below="@+id/txtEve"
+                    android:layout_alignEnd="@+id/imageView3"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5.0"
+                    android:id="@+id/txtRaiting"
+                    android:layout_alignTop="@+id/imageView2"
+                    android:layout_toStartOf="@+id/imageView2"
+                    android:textColor="@color/colorWite"
+                    android:textSize="16dp"
+                    android:layout_marginRight="5dp" />
+
             </RelativeLayout>
 
         </RelativeLayout>
