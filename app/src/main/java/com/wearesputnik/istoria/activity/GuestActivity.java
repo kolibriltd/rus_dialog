@@ -140,6 +140,7 @@ public class GuestActivity extends BaseActivity {
                 itemAdapter.isViewCount = item.IsViewCount;
                 itemAdapter.pathCoverFile = item.PathCoverFile;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
+                itemAdapter.raiting = item.Raiting;
                 itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
             }
@@ -182,6 +183,8 @@ public class GuestActivity extends BaseActivity {
                     bookModel.Description = item.description;
                     bookModel.IsViewCount = item.isViewCount;
                     bookModel.PathCoverFile = item.pathCoverFile;
+                    bookModel.Raiting = item.raiting;
+                    bookModel.TypeId = item.type_id;
                     bookModel.save();
 
                     if (getPermission) {

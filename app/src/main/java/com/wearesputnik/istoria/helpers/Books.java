@@ -23,6 +23,7 @@ public class Books {
     public String textInfoList;
     public String pathCoverFileStorage;
     public boolean flagGuest;
+    public int type_id;
 
     public static Books parseJson(JSONObject json) {
         Books result = new Books();
@@ -46,6 +47,7 @@ public class Books {
             if (json.has("text")) {
                 result.textInfoList = json.getString("text");
             }
+            result.type_id = json.getInt("type_id");
             return result;
         }
         catch (Exception ex) {

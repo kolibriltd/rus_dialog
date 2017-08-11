@@ -7,7 +7,7 @@ import com.activeandroid.annotation.Table;
 /**
  * Created by admin on 24.07.17.
  */
-@Table(name = "Books")
+@Table(name = "TypeBook")
 public class TypeBook extends Model {
     @Column(name = "TypeId")
     public String TypeId;

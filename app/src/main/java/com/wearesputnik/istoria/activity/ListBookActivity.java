@@ -197,6 +197,7 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                         bookModel.IsViewCount = item.isViewCount;
                         bookModel.Raiting = item.raiting;
                         bookModel.PathCoverFile = item.pathCoverFile;
+                        bookModel.TypeId = item.type_id;
                         bookModel.save();
 
                         if (getPermission) {
@@ -210,14 +211,14 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListBookActivity.this);
                     builder.setTitle("Ошибка")
-                            .setMessage(result.error)
-                            .setCancelable(false)
-                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
+                        .setMessage(result.error)
+                        .setCancelable(false)
+                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            }
+                        });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }

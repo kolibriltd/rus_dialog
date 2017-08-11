@@ -39,7 +39,7 @@ public class BookModel extends Model{
     @Column(name = "TapStooBool")
     public boolean TapStooBool;
     @Column(name = "TypeId")
-    public boolean TypeId;
+    public Integer TypeId;
 
 
 }

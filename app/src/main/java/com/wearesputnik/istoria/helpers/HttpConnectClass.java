@@ -90,14 +90,15 @@ public class HttpConnectClass {
 
     }
 
-    public static ResultInfo setSingUp(String email, String password) {
+    public static ResultInfo setSingUp(UserInfo userInfo) {
         ResultInfo result = new ResultInfo();
 
-        HttpPost request = new HttpPost(URL + "account_create");
+        HttpPost request = new HttpPost(URL + "account_login");
 
         List<BasicNameValuePair> parametrs = Arrays.asList(
-                new BasicNameValuePair("email", email),
-                new BasicNameValuePair("password", password)
+                new BasicNameValuePair("email", userInfo.email),
+                new BasicNameValuePair("displayName", userInfo.firs_name),
+                new BasicNameValuePair("code", userInfo.app_key)
         );
 
         try {

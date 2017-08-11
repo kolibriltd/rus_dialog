@@ -9,14 +9,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+
 import com.wearesputnik.istoria.BaseActivity;
 import com.wearesputnik.istoria.R;
+import com.wearesputnik.istoria.UILApplication;
 import com.wearesputnik.istoria.adapters.ItemBookAdapter;
 import com.wearesputnik.istoria.helpers.Books;
 import com.wearesputnik.istoria.helpers.TextInfo;
@@ -25,6 +28,13 @@ import com.wearesputnik.istoria.models.IstoriaInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.solovyev.android.checkout.ActivityCheckout;
+import org.solovyev.android.checkout.BillingRequests;
+import org.solovyev.android.checkout.Checkout;
+import org.solovyev.android.checkout.EmptyRequestListener;
+import org.solovyev.android.checkout.Inventory;
+import org.solovyev.android.checkout.ProductTypes;
+import org.solovyev.android.checkout.Purchase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +42,7 @@ import java.util.List;
 public class ItemBookReadActivity extends BaseActivity {
     ListView listTextBook;
     ItemBookAdapter itemBookAdapter;
-    RelativeLayout relButton, relListViewClick, relButtonTimer, relTapViewInfo, relRaiting;
+    RelativeLayout relButton, relListViewClick, relButtonTimer, relTapViewInfo, relRaiting, relOtvet, relInApp;
     int id_book;
     int countText, tapCount = 0;
     boolean tapBoolStop = false;
@@ -40,7 +50,22 @@ public class ItemBookReadActivity extends BaseActivity {
     boolean tapListView;
     IstoriaInfo istoriaInfo;
     RatingBar ratingBar;
-    TextView btnNext;
+    TextView btnNext, txtOtvet1, txtOtvet2, txtBntInApp, txtMinView, txtSecView;
+    Button btnInApp;
+
+    private class PurchaseListener extends EmptyRequestListener<Purchase> {
+        // your code here
+    }
+
+    private class InventoryCallback implements Inventory.Callback {
+        @Override
+        public void onLoaded(Inventory.Products products) {
+            // your code here
+        }
+    }
+
+    private final ActivityCheckout mCheckout = Checkout.forActivity(this, UILApplication.getInstance().getBilling());
+    private Inventory mInventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +77,6 @@ public class ItemBookReadActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setHomeAsUpIndicator(R.mipmap.arrow);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -67,7 +91,41 @@ public class ItemBookReadActivity extends BaseActivity {
         listTextBook = (ListView) findViewById(R.id.listTextBook);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         btnNext = (TextView) findViewById(R.id.btnNext);
+
+        relOtvet = (RelativeLayout) findViewById(R.id.relOtvet);
+        txtOtvet1 = (TextView) findViewById(R.id.txtOtvet1);
+        txtOtvet2 = (TextView) findViewById(R.id.txtOtvet2);
+
+        txtBntInApp = (TextView) findViewById(R.id.txtBntInApp);
+        txtMinView = (TextView) findViewById(R.id.txtMinView);
+        txtSecView = (TextView) findViewById(R.id.txtSecView);
+
+        relInApp = (RelativeLayout) findViewById(R.id.relInApp);
+        btnInApp = (Button) findViewById(R.id.btnInApp);
+        relInApp.setVisibility(View.GONE);
+
+        txtBntInApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                relButtonTimer.setVisibility(View.GONE);
+                relInApp.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnInApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCheckout.whenReady(new Checkout.EmptyListener() {
+                    @Override
+                    public void onReady(BillingRequests requests) {
+                        requests.purchase(ProductTypes.IN_APP, "weekly", null, mCheckout.getPurchaseFlow());
+                    }
+                });
+            }
+        });
+
         listTextBook.setDividerHeight(0);
+        relOtvet.setVisibility(View.GONE);
 
         istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
         if (istoriaInfo != null) {
@@ -96,7 +154,7 @@ public class ItemBookReadActivity extends BaseActivity {
         }
 
         if (!textInfoList.isEmpty()) {
-            TapItemListView(textInfoList);
+            InitListView(textInfoList);
         }
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +165,27 @@ public class ItemBookReadActivity extends BaseActivity {
 
             }
         });
+
+        mCheckout.start();
+
+        mCheckout.createPurchaseFlow(new PurchaseListener());
+
+        mInventory = mCheckout.makeInventory();
+        mInventory.load(Inventory.Request.create()
+                .loadAllPurchases()
+                .loadSkus(ProductTypes.IN_APP, "weekly"), new InventoryCallback());
+    }
+
+    @Override
+    protected void onDestroy() {
+        mCheckout.stop();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCheckout.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -121,9 +200,7 @@ public class ItemBookReadActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void TapItemListView(List<TextInfo> textInfoList) {
-
+    public void InitListView(List<TextInfo> textInfoList) {
         final List<TextInfo> textInfoListSort = new ArrayList<>();
 
         String nameA = null, nameB = null;
@@ -139,32 +216,37 @@ public class ItemBookReadActivity extends BaseActivity {
             }
         }
 
-
-        countText = textInfoListSort.size();
         itemBookAdapter = new ItemBookAdapter(ItemBookReadActivity.this, nameA, nameB);
         listTextBook.setAdapter(itemBookAdapter);
 
-        if (bookModelOne.IsViewTapCount != null) {
+        TapItemListView(textInfoListSort, false);
+    }
+
+
+    public void TapItemListView(final List<TextInfo> textInfoListSort, boolean branch) {
+
+
+        /*if (bookModelOne.IsViewTapCount != null) {
             tapCount = bookModelOne.IsViewTapCount;
-            if (tapCount >= 4) {
+            if (tapCount >= 4 || branch) {
                 relListViewClick.setVisibility(View.GONE);
             }
             for (int i = 0; i < tapCount; i++) {
                 textInfoListSort.get(i).flags = true;
                 itemBookAdapter.add(textInfoListSort.get(i));
-            }
+            }*/
             /*if (tapCount > 4) {
                 TextInfo empty = new TextInfo();
                 empty.flags = false;
                 empty.emptyFlag = true;
                 itemBookAdapter.add(empty);
             }*/
-            itemBookAdapter.notifyDataSetChanged();
+           /* itemBookAdapter.notifyDataSetChanged();
             scrollMyListViewToBottom();
             if (bookModelOne.TapStooBool) {
                 tapBoolStop = true;
             }
-        }
+        }*/
 
 
         relListViewClick.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +278,8 @@ public class ItemBookReadActivity extends BaseActivity {
         });
     }
 
-    public void ClickRelList(List<TextInfo> textInfoListSort) {
+    public void ClickRelList(final List<TextInfo> textInfoListSort) {
+        countText = textInfoListSort.size();
         if (!tapListView) {
             istoriaInfo.IsTapViewScreen = true;
             istoriaInfo.save();
@@ -206,26 +289,61 @@ public class ItemBookReadActivity extends BaseActivity {
         if (tapCount == 4) {
             relListViewClick.setVisibility(View.GONE);
         }
-        if (tapCount < countText) {
+        if (!textInfoListSort.get(tapCount).branch.isEmpty()) {
+            final int tapBranch = tapCount;
+            for (int i = 0; i < textInfoListSort.get(tapCount).branch.size(); i++) {
+                if (i == 0) {
+                    txtOtvet1.setText(textInfoListSort.get(tapCount).branch.get(i).message);
+                }
+                if (i == 1) {
+                    txtOtvet2.setText(textInfoListSort.get(tapCount).branch.get(i).message);
+                }
+            }
+            relOtvet.setVisibility(View.VISIBLE);
+            txtOtvet1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    tapCount = 1;
+                    relOtvet.setVisibility(View.GONE);
+                    TapItemListView(textInfoListSort.get(tapBranch).branch.get(0).content, true);
+                }
+            });
+            txtOtvet2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    tapCount = 1;
+                    relOtvet.setVisibility(View.GONE);
+                    TapItemListView(textInfoListSort.get(tapBranch).branch.get(1).content, true);
+                }
+            });
+        }
+        else {
+            if (tapCount < countText) {
 
             /*if (tapCount >= 4) {
                 if (itemBookAdapter.getItem(itemBookAdapter.getCount() - 1).emptyFlag) {
                     itemBookAdapter.remove(itemBookAdapter.getItem(itemBookAdapter.getCount() - 1));
                 }
             }*/
-
-            itemBookAdapter.add(textInfoListSort.get(tapCount));
-            itemBookAdapter.notifyDataSetChanged();
-            if (textInfoListSort.get(tapCount).metka != null) {
-                if (textInfoListSort.get(tapCount).metka.trim().equals("END")) {
-                    relRaiting.setVisibility(View.VISIBLE);
+                if (textInfoListSort.get(tapCount).metka != null) {
+                    if (textInfoListSort.get(tapCount).metka.trim().equals("STOP")) {
+                        relButtonTimer.setVisibility(View.VISIBLE);
+                        tapCount++;
+                    }
                 }
-            }
-            else {
-                tapCount++;
-                bookModelOne.IsViewTapCount = tapCount;
-                bookModelOne.save();
-            }
+                if (textInfoListSort.get(tapCount).metka != null) {
+                    if (textInfoListSort.get(tapCount).metka.trim().equals("END")) {
+                        itemBookAdapter.add(textInfoListSort.get(tapCount));
+                        itemBookAdapter.notifyDataSetChanged();
+                        relRaiting.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    itemBookAdapter.add(textInfoListSort.get(tapCount));
+                    itemBookAdapter.notifyDataSetChanged();
+                    tapCount++;
+                    //bookModelOne.IsViewTapCount = tapCount;
+                    //bookModelOne.save();
+                }
             /*if (tapCount > 4) {
                 TextInfo empty = new TextInfo();
                 empty.emptyFlag = true;
@@ -234,7 +352,8 @@ public class ItemBookReadActivity extends BaseActivity {
             }*/
 
 
-            scrollMyListViewToBottom();
+                scrollMyListViewToBottom();
+            }
         }
     }
 

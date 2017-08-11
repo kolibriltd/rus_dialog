@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "31699251908",
+    "project_id": "chatistoria"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31699251908:android:9288cc8f3d20d5ab",
+        "android_client_info": {
+          "package_name": "com.wearesputnik.istoria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31699251908-muglcb8b35f4trpe9a4kv1q7gtb5bh2e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wearesputnik.istoria",
+            "certificate_hash": "eb39d8b701c5b28c0080ac390147223d896dd481"
+          }
+        },
+        {
+          "client_id": "31699251908-cf0u60teh8v137lv66d4fo9rkja2bg1g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgTTUqQ4q5D7sL7sFv0RtGFNn6tIXTVfM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

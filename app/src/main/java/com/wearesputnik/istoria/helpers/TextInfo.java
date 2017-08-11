@@ -1,6 +1,10 @@
 package com.wearesputnik.istoria.helpers;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 05.06.17.
@@ -17,9 +21,11 @@ public class TextInfo {
     public String imgPeopleA;
     public String imgPeopleB;
     public String videoPeopleB;
+    public List<Branch> branch;
 
     public static TextInfo parseJson(JSONObject json) {
         TextInfo result = new TextInfo();
+        result.branch = new ArrayList<>();
         try {
             if (json.has("nameA")) {
                 result.nameA = json.getString("nameA");
@@ -47,6 +53,13 @@ public class TextInfo {
             }
             if (json.has("videoPeopleB")) {
                 result.videoPeopleB = json.getString("videoPeopleB");
+            }
+            if (json.has("branch")) {
+                JSONArray jsonArray = json.getJSONArray("branch");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    result.branch.add(Branch.parseJson(jsonArray.getJSONObject(i)));
+                    //result.branch.add(Branch.parseJson(json.getJSONObject("branch")));
+                }
             }
             result.flags = false;
             result.emptyFlag = false;

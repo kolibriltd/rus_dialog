@@ -7,7 +7,9 @@ import org.json.JSONObject;
  */
 public class UserInfo {
     public Integer user_id;
+    public String email;
     public String app_key;
+    public String firs_name;
 
     public static UserInfo parseJson(JSONObject json) {
         UserInfo result = new UserInfo();

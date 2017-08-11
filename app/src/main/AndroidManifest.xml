@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wearesputnik.istoria"
-    android:versionCode="2"
-    android:versionName="1.2">
+    package="com.wearesputnik.istoria">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <!--<uses-permission android:name="android.permission.ACCOUNT_MANAGER" />-->
 
     <application
         android:name=".UILApplication"
@@ -25,7 +25,7 @@
             android:value="5" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.wearesputnik.istoria.models.BookModel, com.wearesputnik.istoria.models.IstoriaInfo" />
+            android:value="com.wearesputnik.istoria.models.BookModel, com.wearesputnik.istoria.models.IstoriaInfo, com.wearesputnik.istoria.models.TypeBook" />
 
         <activity
             android:name=".SplashActivity"
