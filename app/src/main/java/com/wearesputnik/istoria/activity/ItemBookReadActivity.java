@@ -52,6 +52,7 @@ public class ItemBookReadActivity extends BaseActivity {
     RatingBar ratingBar;
     TextView btnNext, txtOtvet1, txtOtvet2, txtBntInApp, txtMinView, txtSecView;
     Button btnInApp;
+    TimerStart timerStart;
 
     private class PurchaseListener extends EmptyRequestListener<Purchase> {
         // your code here
@@ -279,71 +280,74 @@ public class ItemBookReadActivity extends BaseActivity {
     }
 
     public void ClickRelList(final List<TextInfo> textInfoListSort) {
-        countText = textInfoListSort.size();
-        if (!tapListView) {
-            istoriaInfo.IsTapViewScreen = true;
-            istoriaInfo.save();
-            tapListView = true;
-            relTapViewInfo.setVisibility(View.GONE);
-        }
-        if (tapCount == 4) {
-            relListViewClick.setVisibility(View.GONE);
-        }
-        if (!textInfoListSort.get(tapCount).branch.isEmpty()) {
-            final int tapBranch = tapCount;
-            for (int i = 0; i < textInfoListSort.get(tapCount).branch.size(); i++) {
-                if (i == 0) {
-                    txtOtvet1.setText(textInfoListSort.get(tapCount).branch.get(i).message);
-                }
-                if (i == 1) {
-                    txtOtvet2.setText(textInfoListSort.get(tapCount).branch.get(i).message);
-                }
+        if (!tapBoolStop) {
+            countText = textInfoListSort.size();
+            if (!tapListView) {
+                istoriaInfo.IsTapViewScreen = true;
+                istoriaInfo.save();
+                tapListView = true;
+                relTapViewInfo.setVisibility(View.GONE);
             }
-            relOtvet.setVisibility(View.VISIBLE);
-            txtOtvet1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    tapCount = 1;
-                    relOtvet.setVisibility(View.GONE);
-                    TapItemListView(textInfoListSort.get(tapBranch).branch.get(0).content, true);
+            if (tapCount == 4) {
+                relListViewClick.setVisibility(View.GONE);
+            }
+            if (!textInfoListSort.get(tapCount).branch.isEmpty()) {
+                final int tapBranch = tapCount;
+                for (int i = 0; i < textInfoListSort.get(tapCount).branch.size(); i++) {
+                    if (i == 0) {
+                        txtOtvet1.setText(textInfoListSort.get(tapCount).branch.get(i).message);
+                    }
+                    if (i == 1) {
+                        txtOtvet2.setText(textInfoListSort.get(tapCount).branch.get(i).message);
+                    }
                 }
-            });
-            txtOtvet2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    tapCount = 1;
-                    relOtvet.setVisibility(View.GONE);
-                    TapItemListView(textInfoListSort.get(tapBranch).branch.get(1).content, true);
-                }
-            });
-        }
-        else {
-            if (tapCount < countText) {
+                relOtvet.setVisibility(View.VISIBLE);
+                txtOtvet1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        tapCount = 1;
+                        relOtvet.setVisibility(View.GONE);
+                        TapItemListView(textInfoListSort.get(tapBranch).branch.get(0).content, true);
+                    }
+                });
+                txtOtvet2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        tapCount = 1;
+                        relOtvet.setVisibility(View.GONE);
+                        TapItemListView(textInfoListSort.get(tapBranch).branch.get(1).content, true);
+                    }
+                });
+            } else {
+                if (tapCount < countText) {
 
             /*if (tapCount >= 4) {
                 if (itemBookAdapter.getItem(itemBookAdapter.getCount() - 1).emptyFlag) {
                     itemBookAdapter.remove(itemBookAdapter.getItem(itemBookAdapter.getCount() - 1));
                 }
             }*/
-                if (textInfoListSort.get(tapCount).metka != null) {
-                    if (textInfoListSort.get(tapCount).metka.trim().equals("STOP")) {
-                        relButtonTimer.setVisibility(View.VISIBLE);
-                        tapCount++;
+                    if (textInfoListSort.get(tapCount).metka != null) {
+                        if (textInfoListSort.get(tapCount).metka.trim().equals("STOP")) {
+                            relButtonTimer.setVisibility(View.VISIBLE);
+                            tapCount++;
+                            tapBoolStop = true;
+                            timerStart = new TimerStart();
+                            timerStart.start();
+                        }
                     }
-                }
-                if (textInfoListSort.get(tapCount).metka != null) {
-                    if (textInfoListSort.get(tapCount).metka.trim().equals("END")) {
+                    if (textInfoListSort.get(tapCount).metka != null) {
+                        if (textInfoListSort.get(tapCount).metka.trim().equals("END")) {
+                            itemBookAdapter.add(textInfoListSort.get(tapCount));
+                            itemBookAdapter.notifyDataSetChanged();
+                            relRaiting.setVisibility(View.VISIBLE);
+                        }
+                    } else {
                         itemBookAdapter.add(textInfoListSort.get(tapCount));
                         itemBookAdapter.notifyDataSetChanged();
-                        relRaiting.setVisibility(View.VISIBLE);
+                        tapCount++;
+                        //bookModelOne.IsViewTapCount = tapCount;
+                        //bookModelOne.save();
                     }
-                } else {
-                    itemBookAdapter.add(textInfoListSort.get(tapCount));
-                    itemBookAdapter.notifyDataSetChanged();
-                    tapCount++;
-                    //bookModelOne.IsViewTapCount = tapCount;
-                    //bookModelOne.save();
-                }
             /*if (tapCount > 4) {
                 TextInfo empty = new TextInfo();
                 empty.emptyFlag = true;
@@ -352,7 +356,8 @@ public class ItemBookReadActivity extends BaseActivity {
             }*/
 
 
-                scrollMyListViewToBottom();
+                    scrollMyListViewToBottom();
+                }
             }
         }
     }
@@ -383,6 +388,45 @@ public class ItemBookReadActivity extends BaseActivity {
             }
             dialog.dismiss();
             super.onPostExecute(result);
+        }
+    }
+
+    private class TimerStart extends Thread {
+        public boolean stopped = false;
+
+        public void run() {
+            try {
+                while (!stopped) {
+                    // Активность списка
+                    runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    int secInt = Integer.parseInt(txtSecView.getText().toString());
+                                    if (secInt == 0) {
+                                        timerStart.stopped = true;
+                                        tapBoolStop = false;
+                                        relButtonTimer.setVisibility(View.GONE);
+                                    }
+                                    else {
+                                        secInt = secInt-1;
+                                        if (secInt < 10) {
+                                            txtSecView.setText("0" + secInt);
+                                        }
+                                        else {
+                                            txtSecView.setText(secInt + "");
+                                        }
+                                    }
+                                }
+                            }
+                    );
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                    }
+                }
+            } catch (Exception e) {
+            }
         }
     }
 
