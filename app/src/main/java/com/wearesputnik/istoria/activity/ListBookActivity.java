@@ -3,6 +3,7 @@ package com.wearesputnik.istoria.activity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -13,6 +14,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
@@ -57,6 +60,23 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
         listBooks.setAdapter(booksAdapter);
 
         PermissionStorage();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_list_book, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                startActivity(new Intent(ListBookActivity.this, ProfileActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -241,9 +261,11 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 for (Books item : result) {
 
                     BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
-                    bookModelOne.IsViewCount = item.isViewCount;
-                    bookModelOne.Raiting = item.raiting;
-                    bookModelOne.save();
+                    if (bookModelOne != null) {
+                        bookModelOne.IsViewCount = item.isViewCount;
+                        bookModelOne.Raiting = item.raiting;
+                        bookModelOne.save();
+                    }
                 }
             }
             super.onPostExecute(result);

@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "23.0.2"
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
     }
@@ -47,5 +47,9 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.0.1'
     compile 'org.solovyev.android:checkout:1.0.1@aar'
 }
+
+
+
+
 
 apply plugin: 'com.google.gms.google-services'

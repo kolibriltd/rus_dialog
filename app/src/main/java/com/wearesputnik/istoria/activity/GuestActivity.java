@@ -22,6 +22,7 @@ import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.adapters.BooksAdapter;
 import com.wearesputnik.istoria.helpers.Books;
 import com.wearesputnik.istoria.models.BookModel;
+import com.wearesputnik.istoria.models.IstoriaInfo;
 
 import java.util.List;
 
@@ -42,8 +43,8 @@ public class GuestActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guest);
-
+        //setContentView(R.layout.activity_guest);
+/*
         mLayout = (View) findViewById(R.id.relLayout);
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         Button btnSingUp = (Button) findViewById(R.id.btnSingUp);
@@ -51,9 +52,9 @@ public class GuestActivity extends BaseActivity {
         ListView listBooksGuest = (ListView) findViewById(R.id.listBooksGuest);
         listBooksGuest.setDividerHeight(0);
         booksAdapter = new BooksAdapter(GuestActivity.this, false);
-        listBooksGuest.setAdapter(booksAdapter);
+        listBooksGuest.setAdapter(booksAdapter);*/
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        /*btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(GuestActivity.this, LoginActivity.class);
@@ -69,7 +70,7 @@ public class GuestActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
         PermissionStorage();
     }
@@ -113,11 +114,8 @@ public class GuestActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == RequestStorageId) {
             if (verifyPermissions(grantResults)) {
-                Snackbar.make(mLayout, R.string.permision_available_storage, Snackbar.LENGTH_SHORT).show();
                 ViewListBooks();
                 getPermission = true;
-            } else {
-                Snackbar.make(mLayout, R.string.permissions_not_granted, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
@@ -126,35 +124,28 @@ public class GuestActivity extends BaseActivity {
     }
 
     public void ViewListBooks() {
-        List<BookModel> bookModelList = new Select().from(BookModel.class).execute();
-        if (bookModelList.isEmpty()) {
+        IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
+        if (istoriaInfo == null) {
+            IstoriaInfo newIstoriaInfo = new IstoriaInfo();
+            newIstoriaInfo.IsViewTwoScreen = true;
+            newIstoriaInfo.IsTapViewScreen = false;
+            newIstoriaInfo.save();
+        }
+
+        BookModel bookModel = new Select().from(BookModel.class).where("IdDbServer = ?", 1).executeSingle();
+        if (bookModel == null) {
             new getGuestBooks().execute();
         }
         else {
-            for (BookModel item : bookModelList) {
-                Books itemAdapter = new Books();
-                itemAdapter.pathCoverFileStorage = item.getId().toString();
-                itemAdapter.id_book = Integer.parseInt(item.IdDbServer);
-                itemAdapter.name = item.Name;
-                itemAdapter.author = item.Author;
-                itemAdapter.isViewCount = item.IsViewCount;
-                itemAdapter.pathCoverFile = item.PathCoverFile;
-                itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
-                itemAdapter.raiting = item.Raiting;
-                itemAdapter.flagGuest = false;
-                booksAdapter.add(itemAdapter);
-            }
-            Books itemAdapterEmty = new Books();
-            itemAdapterEmty.flagGuest = true;
-            booksAdapter.add(itemAdapterEmty);
-            booksAdapter.notifyDataSetChanged();
-            id_book = Integer.parseInt(bookModelList.get(bookModelList.size() - 1).IdDbServer);
-            new getGuestBooks().execute();
-            //new getViewCountBooks().execute();
+            Intent intent = new Intent(GuestActivity.this, ItemBookReadActivity.class);
+            intent.putExtra("id_book", Integer.parseInt(bookModel.IdDbServer));
+            intent.putExtra("guestFlag", false);
+            startActivity(intent);
+            finish();
         }
     }
 
-    class getGuestBooks extends AsyncTask<String, String, List<Books>> {
+    class getGuestBooks extends AsyncTask<String, String, Books> {
         Dialog dialog;
         protected void onPreExecute() {
             super.onPreExecute();
@@ -167,35 +158,32 @@ public class GuestActivity extends BaseActivity {
         }
 
         @Override
-        protected List<Books> doInBackground(String... strings) {
-            List<Books> result = httpConect.getGuestBooks(id_book);
+        protected Books doInBackground(String... strings) {
+            Books result = httpConect.getGuestBooks(id_book);
             return result;
         }
 
-        protected void onPostExecute(List<Books> result) {
+        protected void onPostExecute(Books result) {
             if (result != null) {
-                for (Books item : result) {
 
                     BookModel bookModel = new BookModel();
-                    bookModel.IdDbServer = item.id_book + "";
-                    bookModel.Name = item.name;
-                    bookModel.Author = item.author;
-                    bookModel.Description = item.description;
-                    bookModel.IsViewCount = item.isViewCount;
-                    bookModel.PathCoverFile = item.pathCoverFile;
-                    bookModel.Raiting = item.raiting;
-                    bookModel.TypeId = item.type_id;
+                    bookModel.IdDbServer = result.id_book + "";
+                    bookModel.Name = result.name;
+                    bookModel.Author = result.author;
+                    bookModel.Description = result.description;
+                    bookModel.IsViewCount = result.isViewCount;
+                    bookModel.PathCoverFile = result.pathCoverFile;
+                    bookModel.Raiting = result.raiting;
+                    bookModel.TextInfoList = result.textInfoList;
+                    bookModel.TypeId = result.type_id;
                     bookModel.save();
 
-                    if (getPermission) {
-                        booksAdapter.add(item);
-                    }
-                }
                 if (getPermission) {
-                    Books itemAdapterEmty = new Books();
-                    itemAdapterEmty.flagGuest = true;
-                    booksAdapter.add(itemAdapterEmty);
-                    booksAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent(GuestActivity.this, ItemBookReadActivity.class);
+                    intent.putExtra("id_book", result.id_book);
+                    intent.putExtra("guestFlag", false);
+                    startActivity(intent);
+                    finish();
                 }
 
             }

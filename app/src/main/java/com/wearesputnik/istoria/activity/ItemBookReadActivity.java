@@ -53,6 +53,7 @@ public class ItemBookReadActivity extends BaseActivity {
     TextView btnNext, txtOtvet1, txtOtvet2, txtBntInApp, txtMinView, txtSecView;
     Button btnInApp;
     TimerStart timerStart;
+    Integer TypeId;
 
     private class PurchaseListener extends EmptyRequestListener<Purchase> {
         // your code here
@@ -134,12 +135,18 @@ public class ItemBookReadActivity extends BaseActivity {
                 relTapViewInfo.setVisibility(View.GONE);
                 tapListView = true;
             }
+            else {
+                tapListView = false;
+                relTapViewInfo.setVisibility(View.VISIBLE);
+            }
         }
         else {
+            relTapViewInfo.setVisibility(View.VISIBLE);
             tapListView = false;
         }
 
         bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", id_book).executeSingle();
+        TypeId = bookModelOne.TypeId;
 
         getSupportActionBar().setTitle(bookModelOne.Name);
 
@@ -161,9 +168,10 @@ public class ItemBookReadActivity extends BaseActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new setRatingBook().execute(ratingBar.getRating() + "");
+                //new setRatingBook().execute(ratingBar.getRating() + "");
                 relRaiting.setVisibility(View.GONE);
-
+                Intent intent = new Intent(ItemBookReadActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -226,28 +234,29 @@ public class ItemBookReadActivity extends BaseActivity {
 
     public void TapItemListView(final List<TextInfo> textInfoListSort, boolean branch) {
 
-
-        /*if (bookModelOne.IsViewTapCount != null) {
-            tapCount = bookModelOne.IsViewTapCount;
-            if (tapCount >= 4 || branch) {
-                relListViewClick.setVisibility(View.GONE);
-            }
-            for (int i = 0; i < tapCount; i++) {
-                textInfoListSort.get(i).flags = true;
-                itemBookAdapter.add(textInfoListSort.get(i));
-            }*/
+        if (TypeId == 0) {
+            if (bookModelOne.IsViewTapCount != null) {
+                tapCount = bookModelOne.IsViewTapCount;
+                if (tapCount >= 4 || branch) {
+                    relListViewClick.setVisibility(View.GONE);
+                }
+                for (int i = 0; i < tapCount; i++) {
+                    textInfoListSort.get(i).flags = true;
+                    itemBookAdapter.add(textInfoListSort.get(i));
+                }
             /*if (tapCount > 4) {
                 TextInfo empty = new TextInfo();
                 empty.flags = false;
                 empty.emptyFlag = true;
                 itemBookAdapter.add(empty);
             }*/
-           /* itemBookAdapter.notifyDataSetChanged();
-            scrollMyListViewToBottom();
-            if (bookModelOne.TapStooBool) {
-                tapBoolStop = true;
+                itemBookAdapter.notifyDataSetChanged();
+                scrollMyListViewToBottom();
+                if (bookModelOne.TapStooBool) {
+                    tapBoolStop = true;
+                }
             }
-        }*/
+        }
 
 
         relListViewClick.setOnClickListener(new View.OnClickListener() {
@@ -305,6 +314,10 @@ public class ItemBookReadActivity extends BaseActivity {
                 txtOtvet1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        itemBookAdapter.add(textInfoListSort.get(tapBranch).branch.get(0).content.get(0));
+                        itemBookAdapter.notifyDataSetChanged();
+                        scrollMyListViewToBottom();
                         tapCount = 1;
                         relOtvet.setVisibility(View.GONE);
                         TapItemListView(textInfoListSort.get(tapBranch).branch.get(0).content, true);
@@ -314,6 +327,9 @@ public class ItemBookReadActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         tapCount = 1;
+                        itemBookAdapter.add(textInfoListSort.get(tapBranch).branch.get(1).content.get(0));
+                        itemBookAdapter.notifyDataSetChanged();
+                        scrollMyListViewToBottom();
                         relOtvet.setVisibility(View.GONE);
                         TapItemListView(textInfoListSort.get(tapBranch).branch.get(1).content, true);
                     }
@@ -345,8 +361,11 @@ public class ItemBookReadActivity extends BaseActivity {
                         itemBookAdapter.add(textInfoListSort.get(tapCount));
                         itemBookAdapter.notifyDataSetChanged();
                         tapCount++;
-                        //bookModelOne.IsViewTapCount = tapCount;
-                        //bookModelOne.save();
+
+                    }
+                    if (TypeId == 0) {
+                        bookModelOne.IsViewTapCount = tapCount;
+                        bookModelOne.save();
                     }
             /*if (tapCount > 4) {
                 TextInfo empty = new TextInfo();

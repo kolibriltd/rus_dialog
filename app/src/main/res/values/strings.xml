@@ -28,4 +28,9 @@
     <string name="google_accaunt">Войдите, используя аккаунт</string>
     <string name="loading">Загрузка…</string>
     <string name="server_client_id">31699251908-muglcb8b35f4trpe9a4kv1q7gtb5bh2e.apps.googleusercontent.com</string>
+
+    <string name="action_profile">Профиль</string>
+
+    <string name="action_push">Отключить увидомления</string>
+    <string name="action_loguot">Выйти</string>
 </resources>

@@ -107,7 +107,7 @@ public class BooksAdapter extends ArrayAdapter<Books> {
             if (item.pathCoverFileStorage != null) {
                 holder.imageViewCover.setImageURI(Uri.parse(item.pathCoverFileStorage));
             } else if (item.pathCoverFile != null) {
-                String url_img = HttpConnectClass.URL_IMAGE + item.pathCoverFile;
+               /* String url_img = HttpConnectClass.URL_IMAGE + item.pathCoverFile;
                 ImageLoader.getInstance()
                     .displayImage(url_img, holder.imageViewCover, options, new SimpleImageLoadingListener() {
                         @Override
@@ -136,7 +136,7 @@ public class BooksAdapter extends ArrayAdapter<Books> {
                         public void onProgressUpdate(String imageUri, View view, int current, int total) {
 
                         }
-                    });
+                    });*/
             }
 
             view.setOnClickListener(new View.OnClickListener() {

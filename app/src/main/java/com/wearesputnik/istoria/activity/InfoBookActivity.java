@@ -196,7 +196,7 @@ public class InfoBookActivity extends BaseActivity {
         if (result.pathCoverFileStorage != null) {
             imageViewCoverInfo.setImageURI(Uri.parse(result.pathCoverFileStorage));
         } else if (result.pathCoverFile != null) {
-            String url_img = HttpConnectClass.URL_IMAGE + result.pathCoverFile;
+            /*String url_img = HttpConnectClass.URL_IMAGE + result.pathCoverFile;
             ImageLoader.getInstance()
                 .displayImage(url_img, imageViewCoverInfo, options, new SimpleImageLoadingListener() {
                     @Override
@@ -218,7 +218,7 @@ public class InfoBookActivity extends BaseActivity {
                     public void onProgressUpdate(String imageUri, View view, int current, int total) {
 
                     }
-                });
+                });*/
         }
     }
 

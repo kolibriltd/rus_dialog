@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -37,7 +38,7 @@ public class LoginActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
     Button btnLogin;
-    TextView txtGoogleAccaunt;
+    SignInButton txtGoogleAccaunt;
     EditText editTextEmail, editTextPassword;
 
     private static final String TAG = "SignInActivity";
@@ -52,7 +53,7 @@ public class LoginActivity extends BaseActivity implements
         setContentView(R.layout.activity_login);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        txtGoogleAccaunt = (TextView) findViewById(R.id.txtGoogleAccaunt);
+        txtGoogleAccaunt = (SignInButton) findViewById(R.id.txtGoogleAccaunt);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
@@ -143,7 +144,7 @@ public class LoginActivity extends BaseActivity implements
 
         @Override
         protected ResultInfo doInBackground(UserInfo... userInfo) {
-            ResultInfo result = httpConect.setSingUp(userInfo[0]);
+            ResultInfo result = httpConect.setSingUpGmail(userInfo[0]);
             return result;
         }
 

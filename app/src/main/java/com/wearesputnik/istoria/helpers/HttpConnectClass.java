@@ -90,10 +90,10 @@ public class HttpConnectClass {
 
     }
 
-    public static ResultInfo setSingUp(UserInfo userInfo) {
+    public static ResultInfo setSingUpGmail(UserInfo userInfo) {
         ResultInfo result = new ResultInfo();
 
-        HttpPost request = new HttpPost(URL + "account_login");
+        HttpPost request = new HttpPost(URL + "account_gmail");
 
         List<BasicNameValuePair> parametrs = Arrays.asList(
                 new BasicNameValuePair("email", userInfo.email),
@@ -119,10 +119,37 @@ public class HttpConnectClass {
 
     }
 
-    public static List<Books> getGuestBooks(int id_book) {
-        List<Books> result = new ArrayList<>();
+    public static UserInfo getProfile() {
+        UserInfo result = new UserInfo();
 
-        HttpGet request = new HttpGet(URL + "guest_list_books?id=" + id_book);
+        HttpGet request = new HttpGet(URL + "get_profile");
+        request.addHeader( "app_key", UILApplication.AppKey);
+
+        try {
+            HttpResponse response = http.execute(request);
+            String jsonStr = streamToString(response.getEntity().getContent());
+            Log.e("Profile", jsonStr);
+
+            if (!jsonStr.equals("")) {
+                JSONObject jsonObject = new JSONObject(jsonStr);
+                result = UserInfo.parseJson(jsonObject.getJSONObject("result"));
+            }
+            else {
+                return null;
+            }
+            return result;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Books getGuestBooks(int id_book) {
+        Books result = new Books();
+
+        HttpGet request = new HttpGet(URL + "guest_books");
+
 
         try {
             HttpResponse response = http.execute(request);
@@ -131,17 +158,7 @@ public class HttpConnectClass {
 
             if (!jsonStr.equals("")) {
                 JSONObject jsonObject = new JSONObject(jsonStr);
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
-                if (jsonArray.length() > 0) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        Books item = Books.parseJson(jsonArray.getJSONObject(i));
-                        if (item != null) {
-                            result.add(item);
-                        }
-                    }
-                } else {
-                    return null;
-                }
+                result = Books.parseJson(jsonObject.getJSONObject("result"));
             }
             else {
                 return null;
