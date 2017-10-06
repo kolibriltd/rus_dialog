@@ -1,10 +1,13 @@
 package com.wearesputnik.istoria.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -20,7 +23,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 import com.wearesputnik.istoria.R;
+import com.wearesputnik.istoria.activity.YoutubeActivity;
 import com.wearesputnik.istoria.helpers.Config;
 import com.wearesputnik.istoria.helpers.HttpConnectClass;
 import com.wearesputnik.istoria.helpers.TextInfo;
@@ -88,6 +93,10 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
             holder.relVideoB = (RelativeLayout) view.findViewById(R.id.relVideoB);
             holder.youtube_view = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail);
             holder.txtVideoNameB = (TextView) view.findViewById(R.id.txtVideoNameB);
+
+            holder.relVideoA = (RelativeLayout) view.findViewById(R.id.relVideoA);
+            holder.youtube_view_a = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail_a);
+            holder.txtVideoNameA = (TextView) view.findViewById(R.id.txtVideoNameA);
             view.setTag(holder);
         }
 
@@ -98,6 +107,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         holder.relPeopleA.setVisibility(View.GONE);
         holder.relPeopleB.setVisibility(View.GONE);
         holder.relVideoB.setVisibility(View.GONE);
+        holder.relVideoA.setVisibility(View.GONE);
         holder.relDescAB.setVisibility(View.GONE);
         holder.relEmty.setVisibility(View.GONE);
         holder.relEnd.setVisibility(View.GONE);
@@ -114,8 +124,72 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         if (item.imgPeopleA != null) {
             holder.relImageA.setVisibility(View.VISIBLE);
 
+            holder.imgPeopleA.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Dialog dialog = new Dialog(context);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_photo_book);
+                    ImageView imgPhotoBook = (ImageView) dialog.findViewById(R.id.imgPhotoBook);
+
+                    ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleA, imgPhotoBook);
+
+                    imgPhotoBook.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+
             ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleA, holder.imgPeopleA);
             holder.txtImageNameA.setText(this.nameA);
+            if (!item.flags) {
+                StartAnimation(holder.relImageA);
+            }
+        }
+        if (item.videoPeopleA != null) {
+            holder.relVideoA.setVisibility(View.VISIBLE);
+
+            final YouTubeThumbnailLoader.OnThumbnailLoadedListener  onThumbnailLoadedListener = new YouTubeThumbnailLoader.OnThumbnailLoadedListener(){
+                @Override
+                public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+
+                }
+
+                @Override
+                public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                    youTubeThumbnailView.setVisibility(View.VISIBLE);
+                    ///holder.relativeLayoutOverYouTubeThumbnailView.setVisibility(View.VISIBLE);
+                }
+            };
+
+            holder.youtube_view_a.initialize(Config.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+
+                    youTubeThumbnailLoader.setVideo(item.videoPeopleA);
+                    youTubeThumbnailLoader.setOnThumbnailLoadedListener(onThumbnailLoadedListener);
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+                    //write something for failure
+                }
+            });
+
+            holder.youtube_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, YoutubeActivity.class);
+                    intent.putExtra("video", item.videoPeopleA);
+                    context.startActivity(intent);
+                }
+            });
+
+            holder.txtVideoNameA.setText(this.nameA);
             if (!item.flags) {
                 StartAnimation(holder.relImageA);
             }
@@ -132,6 +206,26 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         if (item.imgPeopleB != null) {
             holder.relImageB.setVisibility(View.VISIBLE);
 
+            holder.relImageB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Dialog dialog = new Dialog(context);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_photo_book);
+                    ImageView imgPhotoBook = (ImageView) dialog.findViewById(R.id.imgPhotoBook);
+
+                    ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleB, imgPhotoBook);
+
+                    imgPhotoBook.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+
             ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleB, holder.imgPeopleB);
             holder.txtImageNameB.setText(this.nameB);
             if (!item.flags) {
@@ -140,8 +234,6 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         }
         if (item.videoPeopleB != null) {
             holder.relVideoB.setVisibility(View.VISIBLE);
-
-
 
             final YouTubeThumbnailLoader.OnThumbnailLoadedListener  onThumbnailLoadedListener = new YouTubeThumbnailLoader.OnThumbnailLoadedListener(){
                 @Override
@@ -170,6 +262,15 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
                 }
             });
 
+            holder.youtube_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, YoutubeActivity.class);
+                    intent.putExtra("video", item.videoPeopleB);
+                    context.startActivity(intent);
+                }
+            });
+
             holder.txtVideoNameB.setText(this.nameB);
             if (!item.flags) {
                 StartAnimation(holder.relImageB);
@@ -179,6 +280,14 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
             holder.relDescAB.setVisibility(View.VISIBLE);
 
             holder.txtDescAB.setText(item.context);
+            if (!item.flags) {
+                StartAnimation(holder.relDescAB);
+            }
+        }
+        if (item.callPeopleB != null) {
+            holder.relDescAB.setVisibility(View.VISIBLE);
+
+            holder.txtDescAB.setText(this.nameB + " сбросил вызов");
             if (!item.flags) {
                 StartAnimation(holder.relDescAB);
             }
@@ -212,12 +321,12 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
     }
 
     class ViewHolder {
-        TextView txtPeopleA, txtNamePeopleA, txtImageNameA;
+        TextView txtPeopleA, txtNamePeopleA, txtImageNameA, txtVideoNameA;
         TextView txtPeopleB, txtNamePeopleB, txtImageNameB, txtVideoNameB;
         TextView txtDescAB;
         ImageView imgPeopleB, imgPeopleA;
-        RelativeLayout relPeopleA,relPeopleB, relDescAB, relEnd, relEmty, relImageB, relImageA, relVideoB;
-        YouTubeThumbnailView youtube_view;
+        RelativeLayout relPeopleA,relPeopleB, relDescAB, relEnd, relEmty, relImageB, relImageA, relVideoB, relVideoA;
+        YouTubeThumbnailView youtube_view, youtube_view_a;
     }
 
     public void ImageLoaderView(String url_img, ImageView imageView) {
@@ -242,5 +351,9 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
 
                     }
                 });
+//        Picasso.with(context)
+//            .load(url_img)
+//            .error(R.mipmap.null_foto)
+//            .into(imageView);
     }
 }

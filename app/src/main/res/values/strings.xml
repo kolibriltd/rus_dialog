@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Темная комната</string>
+    <string name="app_name">Байки из склепа</string>
     <string name="info_read">ЧИТАТЬ</string>
     <string name="info_next">ДАЛЕЕ</string>
     <string name="info_hedear">Это художественное\nпроизведение.</string>
@@ -17,7 +17,10 @@
     <string name="singup_activ">РЕГИСТРАЦИЯ</string>
     <string name="singup_exsit">уже есть аккаунт</string>
 
-    <string name="guest_item_list">Хотите получить больше историй?</string>
+    <string name="avtorstvo">Подать заявку на авторство?</string>
+    <string name="cancel">ОТМЕНА</string>
+    <string name="yes">ДА</string>
+    <string name="yesNewAutor">Заявка отправлена. Скоро с вами свяжутся.</string>
 
     <string name="raiting_text">Оцените историю</string>
 
@@ -27,10 +30,11 @@
 
     <string name="google_accaunt">Войдите, используя аккаунт</string>
     <string name="loading">Загрузка…</string>
-    <string name="server_client_id">31699251908-muglcb8b35f4trpe9a4kv1q7gtb5bh2e.apps.googleusercontent.com</string>
+    <string name="server_client_id">959777552825-0o8mrvmcoorv1k1q0p0ms0651oi4aktc.apps.googleusercontent.com</string>
 
     <string name="action_profile">Профиль</string>
 
-    <string name="action_push">Отключить увидомления</string>
+    <string name="action_push_off">Отключить уведомления</string>
+    <string name="action_push_on">Включить уведомления</string>
     <string name="action_loguot">Выйти</string>
 </resources>

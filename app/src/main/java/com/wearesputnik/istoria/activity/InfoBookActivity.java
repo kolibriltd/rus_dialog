@@ -23,6 +23,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 import com.wearesputnik.istoria.BaseActivity;
 import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.helpers.Books;
@@ -106,6 +107,11 @@ public class InfoBookActivity extends BaseActivity {
             bookModelOne.IsView = true;
             bookModelOne.save();
             new setViewBookCount().execute();
+        }
+
+        if (bookModelOne.NewIstori == 1) {
+            bookModelOne.NewIstori = 2;
+            bookModelOne.save();
         }
 
         if (bookModelOne.TextInfoList == null || bookModelOne.TextInfoList.trim().equals("null")) {
@@ -196,8 +202,8 @@ public class InfoBookActivity extends BaseActivity {
         if (result.pathCoverFileStorage != null) {
             imageViewCoverInfo.setImageURI(Uri.parse(result.pathCoverFileStorage));
         } else if (result.pathCoverFile != null) {
-            /*String url_img = HttpConnectClass.URL_IMAGE + result.pathCoverFile;
-            ImageLoader.getInstance()
+            String url_img = HttpConnectClass.URL_IMAGE + result.pathCoverFile;
+            /*ImageLoader.getInstance()
                 .displayImage(url_img, imageViewCoverInfo, options, new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {
@@ -219,6 +225,9 @@ public class InfoBookActivity extends BaseActivity {
 
                     }
                 });*/
+            Picasso.with(this)
+                    .load(url_img)
+                    .into(imageViewCoverInfo);
         }
     }
 

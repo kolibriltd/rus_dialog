@@ -17,4 +17,6 @@ public class IstoriaInfo extends Model {
     public String AppKey;
     @Column(name = "UserId")
     public Integer UserId;
+    @Column(name = "IsPush")
+    public Boolean IsPush;
 }

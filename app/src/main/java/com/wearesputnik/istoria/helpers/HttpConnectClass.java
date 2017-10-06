@@ -33,11 +33,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HttpConnectClass {
-    /*
+
     public static final String URL = "http://www.wearesputnik.com/knigs/index.php/api/";
-    public static final String URL_IMAGE = "http://www.wearesputnik.com/knigs/protected";*/
-    public static final String URL = "http://www.wearesputnik.com/development.knigs/index.php/api/";
-    public static final String URL_IMAGE = "http://www.wearesputnik.com/development.knigs/protected";
+    public static final String URL_IMAGE = "http://www.wearesputnik.com/knigs/protected";
+//    public static final String URL = "http://www.wearesputnik.com/development.knigs/index.php/api/";
+//    public static final String URL_IMAGE = "http://www.wearesputnik.com/development.knigs/protected";
     public static HttpClient http;
 
     private HttpConnectClass() {
@@ -98,7 +98,8 @@ public class HttpConnectClass {
         List<BasicNameValuePair> parametrs = Arrays.asList(
                 new BasicNameValuePair("email", userInfo.email),
                 new BasicNameValuePair("displayName", userInfo.firs_name),
-                new BasicNameValuePair("code", userInfo.app_key)
+                new BasicNameValuePair("code", userInfo.app_key),
+                new BasicNameValuePair("photo", userInfo.photo)
         );
 
         try {
@@ -137,6 +138,32 @@ public class HttpConnectClass {
             else {
                 return null;
             }
+            return result;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResultInfo setNewAutor() {
+        ResultInfo result = new ResultInfo();
+
+        HttpGet request = new HttpGet(URL + "set_new_autor");
+        request.addHeader( "app_key", UILApplication.AppKey);
+
+        try {
+            HttpResponse response = http.execute(request);
+            String jsonStr = streamToString(response.getEntity().getContent());
+            ///Log.e("Profile", jsonStr);
+
+            /*if (!jsonStr.equals("")) {
+                JSONObject jsonObject = new JSONObject(jsonStr);
+                result = UserInfo.parseJson(jsonObject.getJSONObject("result"));
+            }
+            else {
+                return null;
+            }*/
             return result;
         }
         catch (Exception ex) {

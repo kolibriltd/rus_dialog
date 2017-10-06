@@ -1,33 +1,49 @@
 {
   "project_info": {
-    "project_number": "31699251908",
-    "project_id": "chatistoria"
+    "project_number": "959777552825",
+    "project_id": "darkroomistori"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:31699251908:android:9288cc8f3d20d5ab",
+        "mobilesdk_app_id": "1:959777552825:android:9288cc8f3d20d5ab",
         "android_client_info": {
           "package_name": "com.wearesputnik.istoria"
         }
       },
       "oauth_client": [
         {
-          "client_id": "31699251908-muglcb8b35f4trpe9a4kv1q7gtb5bh2e.apps.googleusercontent.com",
+          "client_id": "959777552825-la96m4erq43985mbq0408skjo34t5lrs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.wearesputnik.istoria",
-            "certificate_hash": "eb39d8b701c5b28c0080ac390147223d896dd481"
+            "certificate_hash": "fa0fdef6aedfc8bb7f6c77983cc2267aa9c1304d"
           }
         },
         {
-          "client_id": "31699251908-cf0u60teh8v137lv66d4fo9rkja2bg1g.apps.googleusercontent.com",
+          "client_id": "959777552825-0o8mrvmcoorv1k1q0p0ms0651oi4aktc.apps.googleusercontent.com",
           "client_type": 3
+        },
+        {
+          "client_id": "959777552825-n8cv20l0b20bierr3d480fkmb7u3tfdu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wearesputnik.istoria",
+            "certificate_hash": "161c716e1d1de80c86943629558fb47ac292085a"
+          }
+        },
+        {
+          "client_id": "959777552825-09nkvkgdg6s6ms1o5aej80p4bu238btk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wearesputnik.istoria",
+            "certificate_hash": "476c7f0f0a990d5a87f579a5dc681e3c225a27af"
+          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCgTTUqQ4q5D7sL7sFv0RtGFNn6tIXTVfM"
+          "current_key": "AIzaSyDP5rsmqnXcTXCtiBD_tZAk18Gy6xUbR_E"
         }
       ],
       "services": {

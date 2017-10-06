@@ -40,6 +40,8 @@ public class BookModel extends Model{
     public boolean TapStooBool;
     @Column(name = "TypeId")
     public Integer TypeId;
-
-
+    @Column(name = "LastModified")
+    public String LastModified;
+    @Column(name = "NewIstori")
+    public Integer NewIstori;
 }

@@ -24,6 +24,9 @@ public class Books {
     public String pathCoverFileStorage;
     public boolean flagGuest;
     public int type_id;
+    public String last_modified;
+    public Integer new_istori_int;
+
 
     public static Books parseJson(JSONObject json) {
         Books result = new Books();
@@ -46,6 +49,9 @@ public class Books {
             }
             if (json.has("text")) {
                 result.textInfoList = json.getString("text");
+            }
+            if (json.has("last_modified")) {
+                result.last_modified = json.getString("last_modified");
             }
             result.type_id = json.getInt("type_id");
             return result;

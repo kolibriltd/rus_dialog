@@ -24,6 +24,9 @@ import com.wearesputnik.istoria.helpers.Books;
 import com.wearesputnik.istoria.models.BookModel;
 import com.wearesputnik.istoria.models.IstoriaInfo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class GuestActivity extends BaseActivity {
@@ -71,8 +74,9 @@ public class GuestActivity extends BaseActivity {
                 finish();
             }
         });*/
-
-        PermissionStorage();
+        getPermission = true;
+        ViewListBooks();
+        //PermissionStorage();
     }
 
     public void PermissionStorage () {
@@ -129,6 +133,7 @@ public class GuestActivity extends BaseActivity {
             IstoriaInfo newIstoriaInfo = new IstoriaInfo();
             newIstoriaInfo.IsViewTwoScreen = true;
             newIstoriaInfo.IsTapViewScreen = false;
+            newIstoriaInfo.IsPush = false;
             newIstoriaInfo.save();
         }
 
@@ -165,7 +170,8 @@ public class GuestActivity extends BaseActivity {
 
         protected void onPostExecute(Books result) {
             if (result != null) {
-
+                BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", result.id_book).executeSingle();
+                if (bookModelOne == null) {
                     BookModel bookModel = new BookModel();
                     bookModel.IdDbServer = result.id_book + "";
                     bookModel.Name = result.name;
@@ -176,7 +182,34 @@ public class GuestActivity extends BaseActivity {
                     bookModel.Raiting = result.raiting;
                     bookModel.TextInfoList = result.textInfoList;
                     bookModel.TypeId = result.type_id;
+                    bookModel.NewIstori = 2;
+                    bookModel.LastModified = result.last_modified;
                     bookModel.save();
+                }
+                else {
+                    Date dateServ = null;
+                    Date dateLocal = null;
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        dateServ = format.parse(result.last_modified);
+                        dateLocal = format.parse(bookModelOne.LastModified);
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (dateLocal.getDate() >= dateServ.getDate()) {
+                        bookModelOne.Name = result.name;
+                        bookModelOne.Author = result.author;
+                        bookModelOne.Description = result.description;
+                        bookModelOne.IsViewCount = result.isViewCount;
+                        bookModelOne.Raiting = result.raiting;
+                        bookModelOne.PathCoverFile = result.pathCoverFile;
+                        bookModelOne.TypeId = result.type_id;
+                        bookModelOne.NewIstori = 2;
+                        bookModelOne.LastModified = result.last_modified;
+                        bookModelOne.save();
+                    }
+                }
 
                 if (getPermission) {
                     Intent intent = new Intent(GuestActivity.this, ItemBookReadActivity.class);

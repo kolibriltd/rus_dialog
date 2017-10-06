@@ -20,11 +20,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.activity.GuestActivity;
 import com.wearesputnik.istoria.activity.InfoBookActivity;
@@ -75,80 +77,46 @@ public class BooksAdapter extends ArrayAdapter<Books> {
             ViewHolder holder = new ViewHolder();
             holder.txtName = (TextView) view.findViewById(R.id.txtName);
             holder.txtAuthor = (TextView) view.findViewById(R.id.txtAuthor);
-            holder.txtEve = (TextView) view.findViewById(R.id.txtEve);
             holder.txtRaiting = (TextView) view.findViewById(R.id.txtRaiting);
             holder.imageViewCover = (ImageView) view.findViewById(R.id.imageViewCover);
+            holder.imgStic = (ImageView) view.findViewById(R.id.imgStic);
             holder.relItemListBook = (RelativeLayout) view.findViewById(R.id.relItemListBook);
-            holder.relItemGuestBook = (RelativeLayout) view.findViewById(R.id.relItemGuestBook);
             view.setTag(holder);
         }
 
         ViewHolder holder = (ViewHolder) view.getTag();
-        if (item.flagGuest) {
-            holder.relItemListBook.setVisibility(View.GONE);
-            holder.relItemGuestBook.setVisibility(View.VISIBLE);
-            holder.relItemGuestBook.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, SingupActivity.class);
-                    context.startActivity(intent);
-                    ((GuestActivity)context).finish();
-                }
-            });
+        holder.relItemListBook.setVisibility(View.VISIBLE);
+        holder.txtName.setText(item.name);
+        holder.txtAuthor.setText(item.author);
+        holder.txtRaiting.setText(item.raiting);
+
+        if (item.pathCoverFileStorage != null) {
+            holder.imageViewCover.setImageURI(Uri.parse(item.pathCoverFileStorage));
+        } else if (item.pathCoverFile != null) {
+            String url_img = HttpConnectClass.URL_IMAGE + item.pathCoverFile;
+
+            Glide.with(context)
+                    .load(url_img)
+                    .into(holder.imageViewCover);
+        }
+
+        if (item.new_istori_int == 1) {
+            holder.imgStic.setVisibility(View.VISIBLE);
         }
         else {
-            holder.relItemListBook.setVisibility(View.VISIBLE);
-            holder.relItemGuestBook.setVisibility(View.GONE);
-            holder.txtName.setText(item.name);
-            holder.txtAuthor.setText(item.author);
-            holder.txtEve.setText(item.isViewCount + "");
-            holder.txtRaiting.setText(item.raiting);
-
-            if (item.pathCoverFileStorage != null) {
-                holder.imageViewCover.setImageURI(Uri.parse(item.pathCoverFileStorage));
-            } else if (item.pathCoverFile != null) {
-               /* String url_img = HttpConnectClass.URL_IMAGE + item.pathCoverFile;
-                ImageLoader.getInstance()
-                    .displayImage(url_img, holder.imageViewCover, options, new SimpleImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-                        }
-
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                            if (item.pathCoverFileStorage == null) {
-                                BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
-                                bookModelOne.PathCoverFileStorage = getImageUri(context, loadedImage).toString();
-                                if (bookModelOne.PathCoverFileStorage != null || !bookModelOne.PathCoverFileStorage.trim().equals("null")) {
-                                    item.pathCoverFileStorage = bookModelOne.PathCoverFileStorage;
-                                    bookModelOne.save();
-                                }
-                            }
-                        }
-                    }, new ImageLoadingProgressListener() {
-                        @Override
-                        public void onProgressUpdate(String imageUri, View view, int current, int total) {
-
-                        }
-                    });*/
-            }
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, InfoBookActivity.class);
-                    intent.putExtra("id_book", item.id_book);
-                    intent.putExtra("guestFlag", guestFlag);
-                    context.startActivity(intent);
-                }
-            });
+            holder.imgStic.setVisibility(View.GONE);
         }
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, InfoBookActivity.class);
+                intent.putExtra("id_book", item.id_book);
+                intent.putExtra("guestFlag", guestFlag);
+                context.startActivity(intent);
+            }
+        });
+
 
         return view;
     }
@@ -156,10 +124,9 @@ public class BooksAdapter extends ArrayAdapter<Books> {
     class ViewHolder {
         TextView txtAuthor;
         TextView txtName;
-        TextView txtEve;
         TextView txtRaiting;
-        ImageView imageViewCover;
-        RelativeLayout relItemListBook, relItemGuestBook;
+        ImageView imageViewCover, imgStic;
+        RelativeLayout relItemListBook;
     }
 
     public Uri getImageUri(Context context, Bitmap bitmap) {

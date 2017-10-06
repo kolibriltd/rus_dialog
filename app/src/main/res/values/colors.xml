@@ -11,4 +11,8 @@
     <color name="colorWite">#ffffff</color>
     <color name="colorGrey">#a5adb2</color>
     <color name="colorPodpiska">#063346</color>
+    <color name="colorStarActiv">#55dfe5</color>
+    <color name="colorRaitingText">#1f2e48</color>
+    <color name="colorCartRaiting">#f5f6f7</color>
+    <color name="colorBlack">#000000</color>
 </resources>

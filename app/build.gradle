@@ -3,23 +3,27 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'chatistori'
-            keyPassword 'kofe8789'
+            keyAlias 'sdfgds'
+            keyPassword 'marisha91'
             storeFile file('/Users/admin/Documents/outoie.jks')
-            storePassword 'kofe8789'
+            storePassword 'marisha91'
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.0'
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
     }
     defaultConfig {
         applicationId "com.wearesputnik.istoria"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.2"
+        versionCode 17
+        versionName "1.7"
+        manifestPlaceholders = [onesignal_app_id               : "6307d53a-2b11-4026-9825-47e2e44da0eb",
+                                // Project number pulled from dashboard, local value is ignored.
+                                onesignal_google_project_number: "959777552825"]
     }
     buildTypes {
         release {
@@ -40,13 +44,23 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':imageloader')
     compile files('libs/YouTubeAndroidPlayerApi.jar')
+    compile 'com.onesignal:OneSignal:3.+@aar'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.google.android.gms:play-services-auth:11.0.1'
+    compile 'com.google.android.gms:play-services-auth:11.0.4'
+    compile 'com.google.android.gms:play-services-gcm:11.0.4'
+    compile 'com.google.android.gms:play-services-analytics:11.0.4'
     compile 'org.solovyev.android:checkout:1.0.1@aar'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:4.0.0'
 }
+
+
+
+
+
 
 
 

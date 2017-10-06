@@ -208,12 +208,12 @@ public class LoginActivity extends BaseActivity implements
             String idToken = result.getSignInAccount().getEmail();
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            String code = acct.zzmx();
+           // String code = acct.zzmx();
 
             UserInfo userInfo = new UserInfo();
             userInfo.email = acct.getEmail();
             userInfo.firs_name = acct.getDisplayName();
-            userInfo.app_key = acct.zzmx();
+           // userInfo.app_key = acct.zzmx();
 
             new getLoginTask().execute(userInfo);
 

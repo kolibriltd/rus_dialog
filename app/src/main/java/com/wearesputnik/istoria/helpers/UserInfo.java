@@ -10,6 +10,7 @@ public class UserInfo {
     public String email;
     public String app_key;
     public String firs_name;
+    public String photo;
 
     public static UserInfo parseJson(JSONObject json) {
         UserInfo result = new UserInfo();
@@ -23,6 +24,9 @@ public class UserInfo {
             }
             if (json.has("display_name")) {
                 result.firs_name = json.getString("display_name");
+            }
+            if (json.has("photo")) {
+                result.photo = json.getString("photo");
             }
             return result;
         }

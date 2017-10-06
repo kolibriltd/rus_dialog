@@ -18,29 +18,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.wearesputnik.istoria.BaseActivity;
 import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.adapters.BooksAdapter;
 import com.wearesputnik.istoria.helpers.Books;
 import com.wearesputnik.istoria.helpers.ResultInfo;
+import com.wearesputnik.istoria.helpers.UserInfo;
 import com.wearesputnik.istoria.models.BookModel;
+import com.wearesputnik.istoria.models.UserModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ListBookActivity extends BaseActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     BooksAdapter booksAdapter;
     int id_book = 0;
+    ImageView imgProfile;
 
-    String[] PermisionStorage = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-    };
-    Integer RequestStorageId = 1;
-
-    Boolean getPermission = false;
+    Boolean getListBook = false;
 
     private View mLayout;
 
@@ -51,32 +56,41 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
 
         mLayout = (View) findViewById(R.id.relLayout);
+        imgProfile = (ImageView) findViewById(R.id.imgProfile);
+        ImageView imgAutorNew = (ImageView) findViewById(R.id.imgAutorNew);
 
-        ListView listBooks = (ListView) findViewById(R.id.listBooks);
-        listBooks.setDividerHeight(0);
+        GridView listBooks = (GridView) findViewById(R.id.listBooks);
+        ///listBooks.setDividerHeight(0);
         booksAdapter = new BooksAdapter(ListBookActivity.this, true);
         listBooks.setAdapter(booksAdapter);
 
-        PermissionStorage();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_list_book, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_profile:
-                startActivity(new Intent(ListBookActivity.this, ProfileActivity.class));
-                break;
+        ViewListBooks();
+        UserInfo userInfo = UserModel.SelectUser();
+        if (userInfo != null) {
+            if (!userInfo.photo.trim().equals("")) {
+                Glide.with(ListBookActivity.this)
+                        .load(userInfo.photo)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(imgProfile);
+            }
         }
-        return super.onOptionsItemSelected(item);
+
+        imgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ListBookActivity.this, ProfileActivity.class));
+            }
+        });
+
+        imgAutorNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogNewAutor();
+            }
+        });
     }
 
     @Override
@@ -87,8 +101,10 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
         List<BookModel> bookModelList = new Select().from(BookModel.class).execute();
         if (bookModelList.isEmpty()) {
             new getBooks().execute();
+            getListBook = true;
         }
         else {
+            getListBook = false;
             for (BookModel item : bookModelList) {
                 Books itemAdapter = new Books();
                 itemAdapter.pathCoverFileStorage = item.getId().toString();
@@ -99,73 +115,24 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 itemAdapter.pathCoverFile = item.PathCoverFile;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
                 itemAdapter.raiting = item.Raiting;
+                itemAdapter.new_istori_int = item.NewIstori;
                 itemAdapter.flagGuest = false;
                 booksAdapter.add(itemAdapter);
             }
             booksAdapter.notifyDataSetChanged();
-            id_book = Integer.parseInt(bookModelList.get(bookModelList.size() - 1).IdDbServer);
             new getBooks().execute();
             new getViewCountBooks().execute();
-        }
-    }
-
-    public void PermissionStorage () {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(ListBookActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(ListBookActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestStoragePermission();
-            }
-            else {
-                ViewListBooks();
-                getPermission = true;
-            }
-        }
-        else {
-            ViewListBooks();
-            getPermission = true;
-        }
-    }
-
-    public void requestStoragePermission () {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) ||
-            ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-            Snackbar.make(mLayout, R.string.permission_storage_rationale,
-                    Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ActivityCompat.requestPermissions(ListBookActivity.this, PermisionStorage, RequestStorageId);
-                        }
-                    })
-                    .show();
-        } else {
-            ActivityCompat.requestPermissions(this, PermisionStorage, RequestStorageId);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == RequestStorageId) {
-            if (verifyPermissions(grantResults)) {
-                Snackbar.make(mLayout, R.string.permision_available_storage, Snackbar.LENGTH_SHORT).show();
-                ViewListBooks();
-                getPermission = true;
-            } else {
-                Snackbar.make(mLayout, R.string.permissions_not_granted, Snackbar.LENGTH_SHORT).show();
-            }
-        }
-        else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     public void ViewListBooks() {
         List<BookModel> bookModelList = new Select().from(BookModel.class).execute();
         if (bookModelList.isEmpty()) {
+            getListBook = true;
             new getBooks().execute();
         }
         else {
+            getListBook = false;
             for (BookModel item : bookModelList) {
                 Books itemAdapter = new Books();
                 itemAdapter.pathCoverFileStorage = item.getId().toString();
@@ -177,8 +144,15 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
                 itemAdapter.raiting = item.Raiting;
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
                 itemAdapter.flagGuest = false;
+                if (item.NewIstori != null) {
+                    itemAdapter.new_istori_int = item.NewIstori;
+                }
+                else {
+                    itemAdapter.new_istori_int = 2;
+                }
                 booksAdapter.add(itemAdapter);
             }
+
             booksAdapter.notifyDataSetChanged();
             id_book = Integer.parseInt(bookModelList.get(bookModelList.size() - 1).IdDbServer);
             new getBooks().execute();
@@ -208,23 +182,73 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
             if (result != null) {
                 if (result.status == 0) {
                     for (Books item : result.booksList) {
-
-                        BookModel bookModel = new BookModel();
-                        bookModel.IdDbServer = item.id_book + "";
-                        bookModel.Name = item.name;
-                        bookModel.Author = item.author;
-                        bookModel.Description = item.description;
-                        bookModel.IsViewCount = item.isViewCount;
-                        bookModel.Raiting = item.raiting;
-                        bookModel.PathCoverFile = item.pathCoverFile;
-                        bookModel.TypeId = item.type_id;
-                        bookModel.save();
-
-                        if (getPermission) {
+                        item.new_istori_int = 1;
+                        if (getListBook) {
+                            BookModel bookModel = new BookModel();
+                            bookModel.IdDbServer = item.id_book + "";
+                            bookModel.Name = item.name;
+                            bookModel.Author = item.author;
+                            bookModel.Description = item.description;
+                            bookModel.IsViewCount = item.isViewCount;
+                            bookModel.Raiting = item.raiting;
+                            bookModel.PathCoverFile = item.pathCoverFile;
+                            bookModel.TypeId = item.type_id;
+                            bookModel.LastModified = item.last_modified;
+                            bookModel.NewIstori = 1;
+                            bookModel.save();
                             booksAdapter.add(item);
+
+                        }
+                        else {
+                            BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
+                            if (bookModelOne == null) {
+                                BookModel bookModel = new BookModel();
+                                bookModel.IdDbServer = item.id_book + "";
+                                bookModel.Name = item.name;
+                                bookModel.Author = item.author;
+                                bookModel.Description = item.description;
+                                bookModel.IsViewCount = item.isViewCount;
+                                bookModel.Raiting = item.raiting;
+                                bookModel.PathCoverFile = item.pathCoverFile;
+                                bookModel.TypeId = item.type_id;
+                                bookModel.LastModified = item.last_modified;
+                                bookModel.NewIstori = 1;
+                                bookModel.save();
+                                booksAdapter.add(item);
+                                booksAdapter.notifyDataSetChanged();
+                            }
+                            else {
+//                                Date dateServ = null;
+//                                Date dateLocal = null;
+//                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                                try {
+//                                    dateServ = format.parse(item.last_modified);
+//                                    dateLocal = format.parse(bookModelOne.LastModified);
+//
+//                                } catch (ParseException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                if (dateLocal.getDate() < dateServ.getDate()) {
+                                    bookModelOne.Name = item.name;
+                                    bookModelOne.Author = item.author;
+                                    bookModelOne.Description = item.description;
+                                    bookModelOne.IsViewCount = item.isViewCount;
+                                    bookModelOne.Raiting = item.raiting;
+                                    bookModelOne.PathCoverFile = item.pathCoverFile;
+                                    bookModelOne.TypeId = item.type_id;
+                                    bookModelOne.TextInfoList = item.textInfoList;
+                                    bookModelOne.LastModified = item.last_modified;
+                                    if (bookModelOne.NewIstori == null) {
+                                        bookModelOne.NewIstori = 2;
+                                    }
+                                    bookModelOne.save();
+                                //}
+                            }
+
                         }
                     }
-                    if (getPermission) {
+                    if (getListBook) {
+
                         booksAdapter.notifyDataSetChanged();
                     }
                 }
@@ -270,6 +294,45 @@ public class ListBookActivity extends BaseActivity implements ActivityCompat.OnR
             }
             super.onPostExecute(result);
         }
+    }
+
+    class setNewAutor extends AsyncTask<String, String, ResultInfo> {
+        @Override
+        protected ResultInfo doInBackground(String... strings) {
+            ResultInfo result = httpConect.setNewAutor();
+            return result;
+        }
+
+        protected void onPostExecute(ResultInfo result) {
+            if (result != null) {
+                Snackbar.make(mLayout, R.string.yesNewAutor, Snackbar.LENGTH_SHORT).show();
+            }
+            super.onPostExecute(result);
+        }
+    }
+
+    public void DialogNewAutor() {
+        final Dialog dialog = new Dialog(ListBookActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_avtor_new);
+        TextView txtYes = (TextView) dialog.findViewById(R.id.txtYes);
+        TextView txtCancel = (TextView) dialog.findViewById(R.id.txtCancel);
+
+        txtYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new setNewAutor().execute();
+                dialog.dismiss();
+            }
+        });
+
+        txtCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     public static boolean verifyPermissions(int[] grantResults) {

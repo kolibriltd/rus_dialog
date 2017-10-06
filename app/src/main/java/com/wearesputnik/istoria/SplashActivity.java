@@ -3,6 +3,8 @@ package com.wearesputnik.istoria;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.activeandroid.query.Select;
 import com.wearesputnik.istoria.activity.GuestActivity;
