@@ -172,7 +172,7 @@ public class ProfileActivity extends BaseActivity implements
                 public void onResult(Status status) {
                     IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
                     istoriaInfo.delete();
-                    startActivity(new Intent(ProfileActivity.this, GuestActivity.class));
+                    startActivity(new Intent(ProfileActivity.this, ListBookActivity.class));
                     finish();
                 }
             });

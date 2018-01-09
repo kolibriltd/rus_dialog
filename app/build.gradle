@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '26.0.2'
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -19,8 +19,8 @@ android {
         applicationId "com.wearesputnik.istoria"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 17
-        versionName "1.7"
+        versionCode 23
+        versionName "1.8.3"
         manifestPlaceholders = [onesignal_app_id               : "6307d53a-2b11-4026-9825-47e2e44da0eb",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "959777552825"]
@@ -55,7 +55,9 @@ dependencies {
     compile 'org.solovyev.android:checkout:1.0.1@aar'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.bumptech.glide:glide:4.0.0'
+    compile 'com.android.support.constraint:constraint-layout:+'
 }
+
 
 
 

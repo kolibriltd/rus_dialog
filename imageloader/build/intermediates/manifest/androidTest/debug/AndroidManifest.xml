@@ -13,7 +13,7 @@
         android:label="Tests for com.nostra13.universalimageloader.test"
         android:targetPackage="com.nostra13.universalimageloader.test" />
 
-    <application>
+    <application android:debuggable="true" >
         <uses-library android:name="android.test.runner" />
     </application>
 

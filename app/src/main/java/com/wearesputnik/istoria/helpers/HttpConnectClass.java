@@ -34,10 +34,10 @@ import java.util.List;
 
 public class HttpConnectClass {
 
-    public static final String URL = "http://www.wearesputnik.com/knigs/index.php/api/";
-    public static final String URL_IMAGE = "http://www.wearesputnik.com/knigs/protected";
-//    public static final String URL = "http://www.wearesputnik.com/development.knigs/index.php/api/";
-//    public static final String URL_IMAGE = "http://www.wearesputnik.com/development.knigs/protected";
+//    public static final String URL = "http://www.wearesputnik.com/knigs/index.php/api/";
+//    public static final String URL_IMAGE = "http://www.wearesputnik.com/knigs/protected";
+    public static final String URL = "http://www.wearesputnik.com/development.knigs/index.php/api/";
+    public static final String URL_IMAGE = "http://www.wearesputnik.com/development.knigs/protected";
     public static HttpClient http;
 
     private HttpConnectClass() {
@@ -60,34 +60,6 @@ public class HttpConnectClass {
             }
         }
         return UILApplication.restInstance;
-    }
-
-    public static ResultInfo getLogin(String email, String password) {
-        ResultInfo result = new ResultInfo();
-
-        HttpPost request = new HttpPost(URL + "account_login");
-
-        List<BasicNameValuePair> parametrs = Arrays.asList(
-            new BasicNameValuePair("email", email),
-            new BasicNameValuePair("password", password)
-        );
-
-        try {
-            UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(parametrs, "UTF-8");
-            request.setEntity(formEntity);
-            HttpResponse response = http.execute(request);
-            String jsonStr = streamToString(response.getEntity().getContent());
-
-            JSONObject jsonObject = new JSONObject(jsonStr);
-            result = ResultInfo.parseJson(jsonObject, "login");
-
-            return result;
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-
     }
 
     public static ResultInfo setSingUpGmail(UserInfo userInfo) {
@@ -216,6 +188,7 @@ public class HttpConnectClass {
         try {
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
+            Log.e("Service", jsonStr);
 
             JSONObject jsonObject = new JSONObject(jsonStr);
             result = ResultInfo.parseJson(jsonObject, "listBook");
@@ -228,10 +201,10 @@ public class HttpConnectClass {
         }
     }
 
-    public static Books getOneBook(int id_book, boolean guestFlag) {
+    public static Books getOneBook(int id_book) {
         Books result = new Books();
 
-        HttpGet request = new HttpGet(URL + "descript_book?id=" + id_book + "&flag=" + guestFlag);
+        HttpGet request = new HttpGet(URL + "descript_book?id=" + id_book + "&flag=false");
         request.addHeader( "app_key" , UILApplication.AppKey);
 
         try {

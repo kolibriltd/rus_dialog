@@ -23,6 +23,9 @@ public class TextInfo {
     public String videoPeopleB;
     public String videoPeopleA;
     public String callPeopleB;
+    public String missCallPeopleB;
+    public String audioPeopleB;
+    public String audioPeopleA;
     public List<Branch> branch;
 
     public static TextInfo parseJson(JSONObject json) {
@@ -61,6 +64,15 @@ public class TextInfo {
             }
             if (json.has("callPeopleB")) {
                 result.callPeopleB = json.getString("callPeopleB");
+            }
+            if (json.has("missCallPeopleB")) {
+                result.missCallPeopleB = json.getString("missCallPeopleB");
+            }
+            if (json.has("audioPeopleB")) {
+                result.audioPeopleB = json.getString("audioPeopleB");
+            }
+            if (json.has("audioPeopleA")) {
+                result.audioPeopleA = json.getString("audioPeopleA");
             }
             if (json.has("branch")) {
                 JSONArray jsonArray = json.getJSONArray("branch");

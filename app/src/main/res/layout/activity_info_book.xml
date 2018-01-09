@@ -3,166 +3,196 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wearesputnik.istoria.activity.InfoBookActivity"
-    android:background="@color/colorBacground">
-
-    <include layout="@layout/tollbar"
-        android:id="@+id/toolbar"/>
+    android:background="@color/colorBlack"
+    tools:context="com.wearesputnik.istoria.activity.InfoBookActivity">
 
     <ImageView
+        android:id="@+id/imageViewCoverInfo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageViewCoverInfo"
-        android:layout_alignParentStart="true"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/null_foto_info"
         android:layout_alignParentBottom="false"
-        android:layout_alignTop="@+id/relInfoScreen1" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/null_foto_info" />
 
     <RelativeLayout
+        android:id="@+id/relGradient"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:background="@drawable/gradient_baground"
-        android:id="@+id/relGradient"></RelativeLayout>
+        android:layout_alignParentTop="true"></RelativeLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <Button
         android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textSize="18dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/custom_button_radius"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:text="@string/info_read"
-        android:gravity="center_horizontal"
-        android:paddingBottom="16dp"
-        android:textColor="@color/design_textinput_error_color_light" />
+        android:textColor="@color/colorWite"
+        android:textSize="18dp" />
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tollbar" />
 
     <RelativeLayout
+        android:id="@+id/relInfoScreen2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:layout_above="@+id/btnNext"
+        android:layout_below="@+id/toolbar"
         android:layout_marginBottom="10dp"
-        android:visibility="gone"
-        android:id="@+id/relInfoScreen2">
+        android:visibility="gone">
 
         <com.wearesputnik.istoria.helpers.TextViewGeorgia
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/info_hedear"
-            android:id="@+id/textView2"
-            android:textStyle="italic"
-            android:textSize="16dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="73dp"
+            android:text="@string/info_hedear"
             android:textAlignment="center"
-            android:textColor="@color/background_floating_material_light" />
+            android:textColor="@color/background_floating_material_light"
+            android:textSize="16dp"
+            android:textStyle="italic" />
 
         <com.wearesputnik.istoria.helpers.TextViewGeorgia
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/info_center"
-            android:id="@+id/textView3"
-            android:textStyle="italic"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:textSize="16dp"
+            android:layout_centerVertical="true"
+            android:text="@string/info_center"
             android:textAlignment="center"
-            android:textColor="@color/background_floating_material_light" />
+            android:textColor="@color/background_floating_material_light"
+            android:textSize="16dp"
+            android:textStyle="italic" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relInfoScreen1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentStart="true"
         android:layout_above="@+id/btnNext"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/relInfoScreen1">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp">
 
         <TextView
+            android:id="@+id/txtDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/txtDescription"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:textSize="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:textColor="@color/background_floating_material_light" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/txtAuthor"
-            android:layout_marginBottom="9dp"
-            android:textSize="16dp"
             android:textColor="@color/background_floating_material_light"
-            android:layout_above="@+id/txtDescription"
-            android:layout_alignStart="@+id/txtDescription" />
-
-        <com.wearesputnik.istoria.helpers.TextViewGeorgia
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/txtName"
-            android:textSize="18dp"
-            android:textColor="@color/background_floating_material_light"
-            android:layout_above="@+id/txtAuthor"
-            android:layout_alignStart="@+id/txtAuthor"
-            android:layout_marginBottom="8dp"
-            android:textStyle="italic" />
+            android:textSize="16dp" />
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="16dp"
-            android:layout_alignTop="@+id/txtName"
-            android:layout_alignBottom="@+id/txtAuthor">
+            android:layout_marginTop="82dp">
 
-            <ImageView
+            <Button
+                android:id="@+id/btnProgressMap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
-                android:src="@mipmap/eye"
-                android:layout_alignParentRight="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="177"
-                android:id="@+id/txtEve"
-                android:textColor="@color/background_floating_material_light"
-                android:textSize="16dp"
-                android:layout_toLeftOf="@+id/imageView3"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="-5dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
-                android:src="@mipmap/ic_rating"
-                android:layout_below="@+id/txtEve"
-                android:layout_alignEnd="@+id/imageView3"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5.0"
-                android:id="@+id/txtRaiting"
-                android:layout_alignTop="@+id/imageView2"
-                android:layout_toStartOf="@+id/imageView2"
-                android:layout_marginRight="5dp"
+                android:layout_below="@+id/linearLayout3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button_radius"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/info_map"
                 android:textColor="@color/colorWite"
+                android:textSize="18sp" />
+
+            <com.wearesputnik.istoria.helpers.TextViewGeorgia
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="New Text"
+                android:textColor="@color/background_floating_material_light"
+                android:textSize="18dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/txtAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="New Text"
+                android:textColor="@color/background_floating_material_light"
                 android:textSize="16dp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtAuthor"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/imageView3"
+                    android:layout_below="@+id/txtEve"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@mipmap/ic_rating" />
+
+                <TextView
+                    android:id="@+id/txtRaiting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imageView2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toStartOf="@+id/imageView2"
+                    android:layout_weight="1"
+                    android:text="5.0"
+                    android:textColor="@color/colorWite"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:src="@mipmap/eye" />
+
+                <TextView
+                    android:id="@+id/txtEve"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_weight="1"
+                    android:text="177"
+                    android:textColor="@color/background_floating_material_light"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
         </RelativeLayout>
 

@@ -7,6 +7,7 @@
     <color name="colorTextDesc">#293249</color>
     <color name="colorDescBacground">#dbdee3</color>
     <color name="colorRed">#e81f3e</color>
+    <color name="colorRedButtom">#d9190e</color>
     <color name="colorSignUp">#00b3ff</color>
     <color name="colorWite">#ffffff</color>
     <color name="colorGrey">#a5adb2</color>
@@ -15,4 +16,6 @@
     <color name="colorRaitingText">#1f2e48</color>
     <color name="colorCartRaiting">#f5f6f7</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorNull">@null</color>
+    <color name="colorBackroundProfile">#1b1b1b</color>
 </resources>

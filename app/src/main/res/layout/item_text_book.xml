@@ -1,142 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
 
     <RelativeLayout
+        android:id="@+id/relPeopleA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_gravity="right"
         android:layout_marginLeft="70dp"
-        android:paddingTop="10dp"
+        android:layout_marginRight="16dp"
         android:paddingBottom="10dp"
-        android:id="@+id/relPeopleA"
-        android:layout_gravity="right">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/bacround_people_b"
-                android:elevation="4dp"
+                android:layout_gravity="right"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_gravity="right">
+                android:background="@drawable/bacround_people_b"
+                android:elevation="4dp"
+                android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/txtPeopleA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New Text"
-                    android:id="@+id/txtPeopleA"
                     android:textColor="@color/abc_primary_text_disable_only_material_light" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/txtNamePeopleA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtNamePeopleA"
-                android:textColor="@color/colorTextDesc"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="right"
                 android:layout_marginLeft="5dp"
-                android:layout_gravity="right" />
+                android:layout_marginTop="5dp"
+                android:text="New Text"
+                android:textColor="@color/colorTextDesc" />
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relImageA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/relImageA"
+        android:layout_gravity="right"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="16dp"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:layout_gravity="right">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/bacround_people_b"
-                android:elevation="4dp"
+                android:layout_gravity="right"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_gravity="right">
+                android:background="@drawable/bacround_people_b"
+                android:elevation="4dp"
+                android:padding="10dp">
 
                 <ImageView
+                    android:id="@+id/imgPeopleA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imgPeopleA"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/txtImageNameA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtImageNameA"
-                android:textColor="@color/colorTextDesc"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="right"
                 android:layout_marginLeft="5dp"
-                android:layout_gravity="right" />
+                android:layout_marginTop="5dp"
+                android:text="New Text"
+                android:textColor="@color/colorTextDesc" />
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relVideoA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="right"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="16dp"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:layout_gravity="right"
-        android:id="@+id/relVideoA">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/bacround_people_b"
-                android:elevation="4dp"
+                android:layout_gravity="right"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_gravity="right">
+                android:background="@drawable/bacround_people_b"
+                android:elevation="4dp"
+                android:padding="10dp">
 
                 <com.google.android.youtube.player.YouTubeThumbnailView
                     android:id="@+id/youtube_thumbnail_a"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/txtVideoNameA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtVideoNameA"
-                android:textColor="@color/colorTextDesc"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="right"
                 android:layout_marginLeft="5dp"
-                android:layout_gravity="right"  />
+                android:layout_marginTop="5dp"
+                android:text="New Text"
+                android:textColor="@color/colorTextDesc" />
         </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relAudioA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginLeft="70dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bacround_people_b"
+                android:elevation="4dp"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:id="@+id/imgButnPlayA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/ic_start"
+                    android:src="@null" />
+
+                <SeekBar
+                    android:id="@+id/durationMpA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/imgButnPlayA" />
+
+                <TextView
+                    android:id="@+id/txtCurrentPosA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/durationMpA"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/imgButnPlayA"
+                    android:text="0:0"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12dp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView4A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    app:srcCompat="@mipmap/ic_audio_mes" />
+
+                <TextView
+                    android:id="@+id/txtAudioNameA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="New Text"
+                    android:textColor="@color/colorTextDesc" />
+            </LinearLayout>
+        </LinearLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -184,68 +268,70 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relImageB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="70dp"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:id="@+id/relImageB">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:elevation="4dp"
-                android:background="@drawable/bacround_people_a"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bacround_people_a"
+                android:elevation="4dp"
+                android:padding="10dp">
 
                 <ImageView
+                    android:id="@+id/imgPeopleB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imgPeopleB"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/txtImageNameB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtImageNameB"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/colorTextDesc"
-                android:layout_marginRight="5dp" />
+                android:text="New Text"
+                android:textColor="@color/colorTextDesc" />
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relVideoB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="70dp"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:id="@+id/relVideoB">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:elevation="4dp"
-                android:background="@drawable/bacround_people_a"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/bacround_people_a"
+                android:elevation="4dp"
                 android:padding="10dp">
 
                 <com.google.android.youtube.player.YouTubeThumbnailView
@@ -253,61 +339,144 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/txtVideoNameB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtVideoNameB"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/colorTextDesc"
-                android:layout_marginRight="5dp" />
+                android:text="New Text"
+                android:textColor="@color/colorTextDesc" />
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relAudioB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:id="@+id/relDescAB"
-        android:background="@color/colorDescBacground">
+        android:layout_marginRight="70dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
-        <com.wearesputnik.istoria.helpers.TextViewGeorgia
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bacround_people_a"
+                android:elevation="4dp"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:id="@+id/imgButnPlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/ic_start"
+                    android:src="@null" />
+
+                <SeekBar
+                    android:id="@+id/durationMp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/imgButnPlay" />
+
+                <TextView
+                    android:id="@+id/txtCurrentPos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/durationMp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/imgButnPlay"
+                    android:text="0:0"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12dp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    app:srcCompat="@mipmap/ic_audio_mes" />
+
+                <TextView
+                    android:id="@+id/txtAudioNameB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="New Text"
+                    android:textColor="@color/colorTextDesc" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relDescAB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDescBacground"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <com.wearesputnik.istoria.helpers.TextViewGeorgia
             android:id="@+id/txtDescAB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/colorTextDesc"
             android:gravity="center_horizontal"
+            android:text="New Text"
+            android:textColor="@color/colorTextDesc"
             android:textStyle="italic" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relEnd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:id="@+id/relEnd">
+        android:paddingTop="16dp"
+        android:visibility="gone">
 
         <com.wearesputnik.istoria.helpers.TextViewGeorgia
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-КОНЕЦ-"
-            android:id="@+id/textView"
             android:textColor="@color/abc_input_method_navigation_guard"
             android:textSize="22dp"
             android:textStyle="italic" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relEmty"
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:id="@+id/relEmty"
-        android:background="@color/colorWite"></RelativeLayout>
+        android:background="@color/colorWite"
+        android:visibility="gone">
+
+    </RelativeLayout>
 
 </LinearLayout>

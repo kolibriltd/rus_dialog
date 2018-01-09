@@ -3,291 +3,293 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wearesputnik.istoria.activity.ItemBookReadActivity"
-    android:background="@color/foreground_material_dark">
+    android:background="@color/foreground_material_dark"
+    tools:context="com.wearesputnik.istoria.activity.ItemBookReadActivity">
 
-    <include layout="@layout/tollbar"
-        android:id="@+id/toolbar"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tollbar" />
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/listTextBook"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentStart="true"
-        android:background="@color/foreground_material_dark"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/relButton" />
-
-    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:id="@+id/relListViewClick"
         android:layout_above="@+id/relButton"
-        android:layout_alignParentTop="false"></RelativeLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/foreground_material_dark" />
 
     <RelativeLayout
+        android:id="@+id/relListViewClick"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/relButton"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/toolbar"></RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relTapViewInfo"
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:id="@+id/relTapViewInfo"
-        android:background="@color/colorBacground"
         android:layout_alignParentBottom="true"
+        android:background="@color/colorBlack"
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Нажмите на экран чтобы начать читать историю"
-            android:id="@+id/textView9"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:textSize="16dp"
-            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:text="Нажмите на экран чтобы начать читать историю"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relButton"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:layout_alignParentBottom="true"
-        android:id="@+id/relButton"
         android:background="@null"
         android:visibility="visible">
 
         <RelativeLayout
+            android:id="@+id/relInApp"
             android:layout_width="match_parent"
             android:layout_height="110dp"
-            android:background="@color/colorBacground"
-            android:id="@+id/relInApp"
-            android:visibility="gone"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorBlack"
+            android:visibility="gone">
 
             <Button
+                android:id="@+id/btnInApp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50 рублей"
-                android:id="@+id/btnInApp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
+                android:text="50 рублей"
                 android:textSize="18dp" />
 
             <TextView
+                android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Подождать"
-                android:id="@+id/textView14"
                 android:layout_below="@+id/btnInApp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:text="Подождать"
                 android:textSize="16dp" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relButtonTimer"
             android:layout_width="match_parent"
             android:layout_height="110dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:background="@color/colorBacground"
-            android:id="@+id/relButtonTimer"
+            android:background="@color/colorBlack"
             android:clickable="true"
             android:contextClickable="true"
-            android:layout_alignParentBottom="true"
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Продолжить через"
-                android:id="@+id/textView4"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:text="Продолжить через"
                 android:textSize="16dp" />
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView4"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:id="@+id/linearLayout">
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/txtMinView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00"
-                    android:id="@+id/txtMinView"
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=":"
-                    android:id="@+id/textView6"
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/txtSecView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30"
-                    android:id="@+id/txtSecView"
                     android:textSize="16dp" />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtBntInApp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="НЕ ЖДАТЬ"
-                android:id="@+id/txtBntInApp"
                 android:layout_below="@+id/linearLayout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:textStyle="bold"
+                android:text="НЕ ЖДАТЬ"
                 android:textColor="@color/design_textinput_error_color_light"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relOtvet"
             android:layout_width="match_parent"
             android:layout_height="110dp"
-            android:background="@color/colorBacground"
-            android:id="@+id/relOtvet"
-            android:layout_alignParentEnd="false"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="false"
+            android:background="@color/colorBlack"
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/txtOtvet1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtOtvet1"
                 android:layout_alignParentTop="true"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
-                android:textSize="16dp"
                 android:layout_toRightOf="@+id/imageView5"
-                android:layout_marginLeft="16dp" />
+                android:text="New Text"
+                android:textSize="16dp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
                 android:id="@+id/txtOtvet2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/txtOtvet1"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@+id/imageView6" />
+                android:layout_toRightOf="@+id/imageView6"
+                android:text="New Text"
+                android:textSize="16dp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/imageView5"
-                android:src="@mipmap/arrow_otv"
-                android:layout_marginLeft="16dp"
-                android:layout_alignTop="@+id/txtOtvet1"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="16dp" />
-
-            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/txtOtvet1"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:src="@mipmap/arrow_otv" />
+
+            <ImageView
                 android:id="@+id/imageView6"
-                android:src="@mipmap/arrow_otv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/imageView5"
                 android:layout_alignTop="@+id/txtOtvet2"
-                android:layout_alignStart="@+id/imageView5" />
+                android:src="@mipmap/arrow_otv" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relWipMessaging"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="false"
             android:layout_alignParentStart="true"
-            android:padding="16dp"
+            android:layout_alignParentTop="true"
             android:background="@color/colorDescBacground"
-            android:id="@+id/relWipMessaging"
-            android:visibility="gone"
-            android:layout_alignParentTop="true">
+            android:padding="16dp"
+            android:visibility="gone">
 
             <com.wearesputnik.istoria.helpers.TextViewGeorgia
+                android:id="@+id/txtNameB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtNameB"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="New Text"
                 android:textColor="@color/colorTextDesc" />
 
             <com.wearesputnik.istoria.helpers.TextViewGeorgia
+                android:id="@+id/txtWip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="....."
-                android:id="@+id/txtWip"
                 android:layout_alignParentBottom="false"
-                android:layout_toEndOf="@+id/txtNameB"
                 android:layout_alignParentTop="true"
-                android:textColor="@color/colorTextDesc"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@+id/txtNameB"
+                android:text="....."
+                android:textColor="@color/colorTextDesc" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relCallPeople"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:background="#70dc64"
-            android:id="@+id/relCallPeople"
             android:paddingLeft="16dp">
 
             <TextView
+                android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Идет вызов"
-                android:id="@+id/textView7"
                 android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Идет вызов"
                 android:textSize="18dp"
-                android:textStyle="bold|italic"
-                android:layout_centerVertical="true" />
+                android:textStyle="bold|italic" />
 
             <TextView
+                android:id="@+id/txtCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="....."
-                android:id="@+id/txtCall"
                 android:layout_alignBottom="@+id/textView7"
-                android:layout_toEndOf="@+id/textView7"
                 android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/textView7"
+                android:text="....."
                 android:textSize="18dp"
-                android:textStyle="bold|italic"/>
+                android:textStyle="bold|italic" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relCallPeopleOff"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#ec2f2f"
-            android:id="@+id/relCallPeopleOff">
+            android:background="@color/colorRed"
+            android:visibility="gone">
 
             <TextView
+                android:id="@+id/txtCallOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtCallOff"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:textStyle="bold|italic"
-                android:textSize="18dp" />
+                android:layout_centerVertical="true"
+                android:text="New Text"
+                android:textSize="18dp"
+                android:textStyle="bold|italic" />
         </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relRaiting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="false"
-        android:background="#7b000000"
-        android:id="@+id/relRaiting"
         android:layout_below="@+id/toolbar"
+        android:background="#7b000000"
+        android:clickable="false"
         android:contextClickable="true"
         android:longClickable="false"
         android:visibility="gone">
@@ -295,38 +297,38 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:background="@color/colorCartRaiting"
+            android:layout_centerVertical="true"
+            android:background="@color/colorBlack"
             android:padding="16dp">
 
             <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/CustomRaitingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingBar"
                 android:layout_below="@+id/textView12"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:theme="@style/RatingBar" />
+                android:layout_marginTop="16dp" />
 
             <TextView
+                android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/raiting_text"
-                android:id="@+id/textView12"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:textColor="@color/colorRaitingText"
+                android:layout_alignParentTop="true"
+                android:text="@string/raiting_text"
+                android:textColor="@color/colorWite"
                 android:textSize="18dp" />
 
             <TextView
+                android:id="@+id/btnNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/info_next"
-                android:id="@+id/btnNext"
                 android:layout_below="@+id/ratingBar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
+                android:text="@string/info_next"
                 android:textColor="@color/colorRed"
                 android:textSize="18dp" />
         </RelativeLayout>

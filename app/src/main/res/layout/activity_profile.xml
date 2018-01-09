@@ -3,90 +3,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wearesputnik.istoria.activity.ProfileActivity"
-    android:background="@color/colorWite">
-    <include layout="@layout/tollbar"
-        android:id="@+id/toolbar"/>
+    android:background="@color/colorBackroundProfile"
+    tools:context="com.wearesputnik.istoria.activity.ProfileActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tollbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginTop="16dp"
+        android:id="@+id/relativeLayout2">
 
         <ImageView
+            android:id="@+id/imgProfilePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imgProfilePhoto"
             android:layout_alignParentStart="true"
             android:src="@mipmap/ic_foto_profile" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
             android:layout_toEndOf="@+id/imgProfilePhoto"
-            android:layout_marginLeft="16dp">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Имя"
-                    android:id="@+id/textView5"
-                    android:textColor="@color/bright_foreground_material_light"
+                    android:textColor="@color/colorWite"
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/txtNameDisplay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtNameDisplay"
-                    android:textColor="@color/bright_foreground_material_light"
-                    android:textSize="16dp"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/colorWite"
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtEmail"
-                android:textColor="@color/bright_foreground_material_light"
-                android:textSize="16dp"
-                android:layout_marginTop="5dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Подписка оплачена по"
-                    android:id="@+id/textView8"
-                    android:textColor="@color/colorPodpiska"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="оплатите"
-                    android:id="@+id/txtOplata"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorRed" />
-            </LinearLayout>
+                android:layout_marginTop="5dp"
+                android:textColor="@color/colorWite"
+                android:textSize="16dp" />
 
         </LinearLayout>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/relativeLayout2"
+        android:background="@color/colorBlack"
+        android:id="@+id/relativeLayout3">
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Подписка"
+            android:textColor="@color/colorWite"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout3"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="Оплачена по"
+            android:textColor="@color/colorWite"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txtOplata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="оплатите"
+            android:textColor="@color/colorRed"
+            android:textSize="16dp" />
+    </LinearLayout>
 
 </RelativeLayout>
