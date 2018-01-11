@@ -73,10 +73,11 @@ public class ListBookActivity extends BaseActivity  implements
         imgAutorNew.setVisibility(View.GONE);
 
         GridView listBooks = (GridView) findViewById(R.id.listBooks);
-        booksAdapter = new BooksAdapter(ListBookActivity.this, true);
+        booksAdapter = new BooksAdapter(ListBookActivity.this);
         listBooks.setAdapter(booksAdapter);
 
-        InitListBooks();
+        new getBooks().execute();
+
         if (!isMyServiceRunning(BooksService.class)) {
             startService(new Intent(ListBookActivity.this, BooksService.class));
         }
@@ -107,17 +108,24 @@ public class ListBookActivity extends BaseActivity  implements
 
         IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
         if (istoriaInfo != null) {
-            imgProfile.setVisibility(View.VISIBLE);
-            UserInfo userInfo = UserModel.SelectUser();
-            if (userInfo != null) {
-                if (!userInfo.photo.trim().equals("")) {
-                    Glide.with(ListBookActivity.this)
-                            .load(userInfo.photo)
-                            .apply(RequestOptions.circleCropTransform())
-                            .into(imgProfile);
+            if (istoriaInfo.AppKey != null) {
+                imgProfile.setVisibility(View.VISIBLE);
+                UserInfo userInfo = UserModel.SelectUser();
+                if (userInfo != null) {
+                    if (!userInfo.photo.trim().equals("")) {
+                        Glide.with(ListBookActivity.this)
+                                .load(userInfo.photo)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(imgProfile);
+                    }
                 }
+                getListBookGuest = false;
             }
-            getListBookGuest = false;
+            else {
+                imgProfile.setVisibility(View.GONE);
+                signIn();
+                getListBookGuest = true;
+            }
         }
         else {
             imgProfile.setVisibility(View.GONE);
@@ -145,37 +153,39 @@ public class ListBookActivity extends BaseActivity  implements
     protected void onRestart() {
         super.onRestart();
 
-        InitListBooks();
-
-        IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
-        if (istoriaInfo != null) {
-            imgProfile.setVisibility(View.VISIBLE);
-            UserInfo userInfo = UserModel.SelectUser();
-            if (userInfo != null) {
-                if (!userInfo.photo.trim().equals("")) {
-                    Glide.with(ListBookActivity.this)
-                        .load(userInfo.photo)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(imgProfile);
-                }
-            }
-            getListBookGuest = false;
-        }
-        else {
-
-            imgProfile.setVisibility(View.GONE);
-            signIn();
-            getListBookGuest = true;
-        }
-    }
-
-    private void InitListBooks() {
         List<Books> booksList = BookModel.ListBooksIstori();
-        if (booksList.isEmpty()) {
+        if (booksList.size() == 0) {
             new getBooks().execute();
         }
         else {
             ViewListBooks();
+        }
+
+        IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
+        if (istoriaInfo != null) {
+            if (istoriaInfo.AppKey != null) {
+                imgProfile.setVisibility(View.VISIBLE);
+                UserInfo userInfo = UserModel.SelectUser();
+                if (userInfo != null) {
+                    if (!userInfo.photo.trim().equals("")) {
+                        Glide.with(ListBookActivity.this)
+                                .load(userInfo.photo)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(imgProfile);
+                    }
+                }
+                getListBookGuest = false;
+            }
+            else {
+                imgProfile.setVisibility(View.GONE);
+                signIn();
+                getListBookGuest = true;
+            }
+        }
+        else {
+            imgProfile.setVisibility(View.GONE);
+            signIn();
+            getListBookGuest = true;
         }
     }
 
@@ -239,6 +249,14 @@ public class ListBookActivity extends BaseActivity  implements
                     alertDialog.show();
                 }
 
+            }
+            else {
+                List<Books> booksList = BookModel.ListBooksIstori();
+                if (booksList != null) {
+                    if (booksList.size() > 0) {
+                        ViewListBooks();
+                    }
+                }
             }
             dialog.dismiss();
             super.onPostExecute(result);

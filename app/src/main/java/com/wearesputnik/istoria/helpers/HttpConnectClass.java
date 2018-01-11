@@ -79,6 +79,7 @@ public class HttpConnectClass {
             request.setEntity(formEntity);
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
+            Log.e("Login", jsonStr);
 
             JSONObject jsonObject = new JSONObject(jsonStr);
             result = ResultInfo.parseJson(jsonObject, "login");

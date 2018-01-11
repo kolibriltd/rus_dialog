@@ -155,12 +155,18 @@ public class ItemBookReadActivity extends BaseActivity{
             if (istoriaInfo.IsTapViewScreen) {
                 relTapViewInfo.setVisibility(View.GONE);
                 tapListView = true;
-            } else {
+            }
+            else {
                 tapListView = false;
                 relTapViewInfo.setVisibility(View.VISIBLE);
             }
-            if (istoriaInfo.IsPush) {
-                isVibrate = true;
+            try {
+                if (istoriaInfo.IsPush) {
+                    isVibrate = true;
+                }
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
 
@@ -357,127 +363,141 @@ public class ItemBookReadActivity extends BaseActivity{
         if (!tapBoolStop) {
             boolean notifAdapter = false;
             countText = textInfoListSortGlobal.size();
-            if (!tapListView) {
-                istoriaInfo.IsTapViewScreen = true;
-                istoriaInfo.save();
-                tapListView = true;
-                relTapViewInfo.setVisibility(View.GONE);
-            }
-            if (tapCount == 4) {
-                relListViewClick.setVisibility(View.GONE);
-            }
-            if (!textInfoListSortGlobal.get(tapCount).branch.isEmpty()) {
-                final int tapBranch = tapCount;
-                for (int i = 0; i < textInfoListSortGlobal.get(tapCount).branch.size(); i++) {
-                    if (i == 0) {
-                        txtOtvet1.setText(textInfoListSortGlobal.get(tapCount).branch.get(i).message);
-                    }
-                    if (i == 1) {
-                        txtOtvet2.setText(textInfoListSortGlobal.get(tapCount).branch.get(i).message);
-                    }
+            if (tapCount > (countText - 1)) {
+                TextInfo endTextInfo = new TextInfo();
+                endTextInfo.metka = "END";
+                tapBoolStop = true;
+                bookModelOne.BranchJsonEnd = "END";
+                bookModelOne.save();
+                itemBookAdapter.add(endTextInfo);
+                itemBookAdapter.notifyDataSetChanged();
+                scrollMyListViewToBottom();
+                if (!bookModelOne.isRaiting) {
+                    relRaiting.setVisibility(View.VISIBLE);
                 }
-                relOtvet.setVisibility(View.VISIBLE);
-                txtOtvet1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        itemBookAdapter.add(textInfoListSortGlobal.get(tapBranch).branch.get(0).content.get(0));
-                        itemBookAdapter.notifyDataSetChanged();
-                        scrollMyListViewToBottom();
-                        tapCount = 1;
-                        relOtvet.setVisibility(View.GONE);
-                        bookModelOne.BranchJsonSave = BranchJsonSave.jsonGenerete(bookModelOne.BranchJsonSave, 0);
-                        bookModelOne.IsViewTapCount = tapCount;
-                        bookModelOne.save();
-                        TapItemListView(textInfoListSortGlobal.get(tapBranch).branch.get(0).content, true);
-                    }
-                });
-                txtOtvet2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        tapCount = 1;
-                        itemBookAdapter.add(textInfoListSortGlobal.get(tapBranch).branch.get(1).content.get(0));
-                        itemBookAdapter.notifyDataSetChanged();
-                        scrollMyListViewToBottom();
-                        relOtvet.setVisibility(View.GONE);
-                        bookModelOne.BranchJsonSave = BranchJsonSave.jsonGenerete(bookModelOne.BranchJsonSave, 1);
-                        bookModelOne.IsViewTapCount = tapCount;
-                        bookModelOne.save();
-                        TapItemListView(textInfoListSortGlobal.get(tapBranch).branch.get(1).content, true);
-                    }
-                });
-            } else {
-                if (tapCount < countText) {
-                    if (textInfoListSortGlobal.get(tapCount).metka != null) {
-                        if (textInfoListSortGlobal.get(tapCount).metka.trim().equals("STOP")) {
-                            relButtonTimer.setVisibility(View.VISIBLE);
-                            tapCount++;
-                            tapBoolStop = true;
-                            timerStart = new TimerStart();
-                            timerStart.start();
+            }
+            else {
+                if (!tapListView) {
+                    istoriaInfo.IsTapViewScreen = true;
+                    istoriaInfo.save();
+                    tapListView = true;
+                    relTapViewInfo.setVisibility(View.GONE);
+                }
+                if (tapCount == 4) {
+                    relListViewClick.setVisibility(View.GONE);
+                }
+                if (!textInfoListSortGlobal.get(tapCount).branch.isEmpty()) {
+                    final int tapBranch = tapCount;
+                    for (int i = 0; i < textInfoListSortGlobal.get(tapCount).branch.size(); i++) {
+                        if (i == 0) {
+                            txtOtvet1.setText(textInfoListSortGlobal.get(tapCount).branch.get(i).message);
+                        }
+                        if (i == 1) {
+                            txtOtvet2.setText(textInfoListSortGlobal.get(tapCount).branch.get(i).message);
                         }
                     }
-                    if (textInfoListSortGlobal.get(tapCount).callPeopleB != null) {
-                        relCallPeople.setVisibility(View.VISIBLE);
-                        if(!isVibrate) {
-                            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibrator.vibrate(2000);
-                        }
-                        TypeCall = 1;
-                        TimerCall = 18;
-                        tapBoolStop = true;
-                        textInfoWip = textInfoListSortGlobal.get(tapCount);
-                        callPeople = new CallPeople();
-                        callPeople.start();
-                        notifAdapter = true;
-                    }
-                    if (textInfoListSortGlobal.get(tapCount).missCallPeopleB != null) {
-                        relCallPeople.setVisibility(View.VISIBLE);
-                        if(!isVibrate) {
-                            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibrator.vibrate(2000);
-                        }
-                        TypeCall = 2;
-                        TimerCall = 18;
-                        tapBoolStop = true;
-                        textInfoWip = textInfoListSortGlobal.get(tapCount);
-                        callPeople = new CallPeople();
-                        callPeople.start();
-                        notifAdapter = true;
-                    }
-                    if (textInfoListSortGlobal.get(tapCount).metka != null) {
-                        if (textInfoListSortGlobal.get(tapCount).metka.trim().equals("END")) {
-                            tapBoolStop = true;
-                            bookModelOne.BranchJsonEnd = "END";
-                            bookModelOne.save();
-                            itemBookAdapter.add(textInfoListSortGlobal.get(tapCount));
+                    relOtvet.setVisibility(View.VISIBLE);
+                    txtOtvet1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            itemBookAdapter.add(textInfoListSortGlobal.get(tapBranch).branch.get(0).content.get(0));
                             itemBookAdapter.notifyDataSetChanged();
-                            if (!bookModelOne.isRaiting) {
-                                relRaiting.setVisibility(View.VISIBLE);
+                            scrollMyListViewToBottom();
+                            tapCount = 1;
+                            relOtvet.setVisibility(View.GONE);
+                            bookModelOne.BranchJsonSave = BranchJsonSave.jsonGenerete(bookModelOne.BranchJsonSave, 0);
+                            bookModelOne.IsViewTapCount = tapCount;
+                            bookModelOne.save();
+                            TapItemListView(textInfoListSortGlobal.get(tapBranch).branch.get(0).content, true);
+                        }
+                    });
+                    txtOtvet2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            tapCount = 1;
+                            itemBookAdapter.add(textInfoListSortGlobal.get(tapBranch).branch.get(1).content.get(0));
+                            itemBookAdapter.notifyDataSetChanged();
+                            scrollMyListViewToBottom();
+                            relOtvet.setVisibility(View.GONE);
+                            bookModelOne.BranchJsonSave = BranchJsonSave.jsonGenerete(bookModelOne.BranchJsonSave, 1);
+                            bookModelOne.IsViewTapCount = tapCount;
+                            bookModelOne.save();
+                            TapItemListView(textInfoListSortGlobal.get(tapBranch).branch.get(1).content, true);
+                        }
+                    });
+                }
+                else {
+                    if (tapCount < countText) {
+                        if (textInfoListSortGlobal.get(tapCount).metka != null) {
+                            if (textInfoListSortGlobal.get(tapCount).metka.trim().equals("STOP")) {
+                                relButtonTimer.setVisibility(View.VISIBLE);
+                                tapCount++;
+                                tapBoolStop = true;
+                                timerStart = new TimerStart();
+                                timerStart.start();
                             }
                         }
-                    }
-                    else {
-                        if (textInfoListSortGlobal.get(tapCount).peopleB != null) {
-                            relWipMessaging.setVisibility(View.VISIBLE);
-                            TimerMessageWip = (textInfoListSortGlobal.get(tapCount).peopleB.length() / 2)/2;
+                        if (textInfoListSortGlobal.get(tapCount).callPeopleB != null) {
+                            relCallPeople.setVisibility(View.VISIBLE);
+                            if (!isVibrate) {
+                                vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                vibrator.vibrate(2000);
+                            }
+                            TypeCall = 1;
+                            TimerCall = 18;
                             tapBoolStop = true;
-                            messageWip = new MessageWip();
-                            messageWip.start();
                             textInfoWip = textInfoListSortGlobal.get(tapCount);
+                            callPeople = new CallPeople();
+                            callPeople.start();
+                            notifAdapter = true;
                         }
-                        else {
-                            if (!notifAdapter) {
+                        if (textInfoListSortGlobal.get(tapCount).missCallPeopleB != null) {
+                            relCallPeople.setVisibility(View.VISIBLE);
+                            if (!isVibrate) {
+                                vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                vibrator.vibrate(2000);
+                            }
+                            TypeCall = 2;
+                            TimerCall = 18;
+                            tapBoolStop = true;
+                            textInfoWip = textInfoListSortGlobal.get(tapCount);
+                            callPeople = new CallPeople();
+                            callPeople.start();
+                            notifAdapter = true;
+                        }
+                        if (textInfoListSortGlobal.get(tapCount).metka != null) {
+                            if (textInfoListSortGlobal.get(tapCount).metka.trim().equals("END")) {
+                                tapBoolStop = true;
+                                bookModelOne.BranchJsonEnd = "END";
+                                bookModelOne.save();
                                 itemBookAdapter.add(textInfoListSortGlobal.get(tapCount));
                                 itemBookAdapter.notifyDataSetChanged();
-                                tapCount++;
+                                if (!bookModelOne.isRaiting) {
+                                    relRaiting.setVisibility(View.VISIBLE);
+                                }
                             }
+                        } else {
+                            if (textInfoListSortGlobal.get(tapCount).peopleB != null) {
+                                relWipMessaging.setVisibility(View.VISIBLE);
+                                TimerMessageWip = (textInfoListSortGlobal.get(tapCount).peopleB.length() / 2) / 2;
+                                tapBoolStop = true;
+                                messageWip = new MessageWip();
+                                messageWip.start();
+                                textInfoWip = textInfoListSortGlobal.get(tapCount);
+                            } else {
+                                if (!notifAdapter) {
+                                    itemBookAdapter.add(textInfoListSortGlobal.get(tapCount));
+                                    itemBookAdapter.notifyDataSetChanged();
+                                    tapCount++;
+                                }
+                            }
+
                         }
+                        bookModelOne.IsViewTapCount = tapCount;
+                        bookModelOne.save();
 
+                        scrollMyListViewToBottom();
                     }
-                    bookModelOne.IsViewTapCount = tapCount;
-                    bookModelOne.save();
-
-                    scrollMyListViewToBottom();
                 }
             }
         }
@@ -506,8 +526,6 @@ public class ItemBookReadActivity extends BaseActivity{
                 bookModelOne.Raiting = result.raiting;
                 bookModelOne.isRaiting = true;
                 bookModelOne.save();
-//                Intent intent = new Intent(ItemBookReadActivity.this, ListBookActivity.class);
-//                startActivity(intent);
                finish();
             }
             dialog.dismiss();

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 import com.wearesputnik.istoria.R;
@@ -31,6 +32,7 @@ public class MapProgressActivity extends AppCompatActivity {
     BookModel bookModelOne;
     MapProgressAdapter mapProgressAdapter;
     Button btnRead;
+    TextView txtProgresProcent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class MapProgressActivity extends AppCompatActivity {
         btnRead = (Button) findViewById(R.id.btnRead);
         ListView listMapProgress = (ListView) findViewById(R.id.listMapProgress);
         listMapProgress.setDividerHeight(0);
+        txtProgresProcent = (TextView) findViewById(R.id.txtProgresProcent);
+        txtProgresProcent.setText("ПРОЙДЕНО 0%");
 
         mapProgressAdapter = new MapProgressAdapter(MapProgressActivity.this);
         listMapProgress.setAdapter(mapProgressAdapter);
@@ -101,6 +105,7 @@ public class MapProgressActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             if (!jsonSaveList.isEmpty()) {
+                ViewProgressProcent(jsonSaveList);
                 for (ProgressInfo item : jsonSaveList) {
                     mapProgressAdapter.add(item);
                 }
@@ -109,5 +114,19 @@ public class MapProgressActivity extends AppCompatActivity {
         mapProgressAdapter.notifyDataSetChanged();
     }
 
+    public void ViewProgressProcent(List<ProgressInfo> jsonSaveList) {
+        Integer countAllMap = 0;
+        Integer countActiveMap = 0;
+        for (ProgressInfo item : jsonSaveList) {
+            countAllMap = countAllMap + item.progressInfoList.size();
+            for (MapProgressInfo itemMap : item.progressInfoList) {
+                if (itemMap.isActiveImage) {
+                    countActiveMap++;
+                }
+            }
+        }
 
+        int procentMap = countActiveMap * 100 / countAllMap;
+        txtProgresProcent.setText("ПРОЙДЕНО " + procentMap + "%");
+    }
 }

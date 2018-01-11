@@ -1,9 +1,11 @@
 package com.wearesputnik.istoria.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.wearesputnik.istoria.BaseActivity;
 import com.wearesputnik.istoria.R;
+import com.wearesputnik.istoria.UILApplication;
 import com.wearesputnik.istoria.activity.InfoBookActivity;
 import com.wearesputnik.istoria.helpers.Books;
 import com.wearesputnik.istoria.helpers.HttpConnectClass;
@@ -28,24 +32,16 @@ import java.util.List;
 public class BooksAdapter extends ArrayAdapter<Books> {
     List<Books> booksList;
     Context context;
-    private DisplayImageOptions options;
-    boolean guestFlag;
-    Bitmap m_currentBitmap;
+    boolean guestFlag = false;
 
-    public BooksAdapter (Context context, boolean guestFlag) {
+
+    public BooksAdapter (Context context) {
         super(context, 0);
         booksList = new ArrayList<>();
-        this.guestFlag = guestFlag;
         this.context = context;
-        options = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.mipmap.null_foto)
-            .showImageForEmptyUri(R.mipmap.null_foto)
-            .showImageOnFail(R.mipmap.null_foto)
-            .cacheInMemory(true)
-            .cacheOnDisk(true)
-            .considerExifParams(true)
-            .bitmapConfig(Bitmap.Config.RGB_565)
-            .build();
+        if (UILApplication.AppKey == null) {
+            this.guestFlag = true;
+        }
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -91,12 +87,29 @@ public class BooksAdapter extends ArrayAdapter<Books> {
             }
         }
 
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, InfoBookActivity.class);
-                intent.putExtra("id_book", item.id_book);
-                context.startActivity(intent);
+                if (guestFlag) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Ошибка")
+                            .setMessage("Вы не залогинелись")
+                            .setCancelable(false)
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else {
+                    Intent intent = new Intent(context, InfoBookActivity.class);
+                    intent.putExtra("id_book", item.id_book);
+                    context.startActivity(intent);
+                }
             }
         });
 

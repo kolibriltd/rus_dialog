@@ -12,7 +12,12 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
+import com.activeandroid.Model;
+import com.activeandroid.TableInfo;
 import com.activeandroid.query.Select;
+import com.activeandroid.util.SQLiteUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.auth.api.Auth;
@@ -30,6 +35,7 @@ import com.wearesputnik.istoria.helpers.UserInfo;
 import com.wearesputnik.istoria.models.BookModel;
 import com.wearesputnik.istoria.models.IstoriaInfo;
 import com.wearesputnik.istoria.models.UserModel;
+import com.wearesputnik.istoria.models.UtilitModel;
 
 import org.solovyev.android.checkout.ActivityCheckout;
 import org.solovyev.android.checkout.BillingRequests;
@@ -86,43 +92,19 @@ public class ProfileActivity extends BaseActivity implements
             }
         }
 
-        /*txtOplata.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCheckout.whenReady(new Checkout.EmptyListener() {
-                    @Override
-                    public void onReady(BillingRequests requests) {
-                        requests.purchase(ProductTypes.IN_APP, "weekly", null, mCheckout.getPurchaseFlow());
-                    }
-                });
-            }
-*/
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestServerAuthCode(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-        /*mCheckout.start();
-
-        mCheckout.createPurchaseFlow(new PurchaseListener());
-
-        mInventory = mCheckout.makeInventory();
-        mInventory.load(Inventory.Request.create()
-                .loadAllPurchases()
-                .loadSkus(ProductTypes.IN_APP, "weekly"), new InventoryCallback());*/
 
         new getProfile().execute();
     }
 
-   /* @Override
-    protected void onDestroy() {
-        mCheckout.stop();
-        super.onDestroy();
-*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -170,9 +152,11 @@ public class ProfileActivity extends BaseActivity implements
             new ResultCallback<Status>() {
                 @Override
                 public void onResult(Status status) {
-                    IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
-                    istoriaInfo.delete();
-                    startActivity(new Intent(ProfileActivity.this, ListBookActivity.class));
+
+                    UtilitModel.truncate(IstoriaInfo.class);
+                    UtilitModel.truncate(BookModel.class);
+                    UtilitModel.truncate(UserModel.class);
+
                     finish();
                 }
             });
@@ -216,14 +200,6 @@ public class ProfileActivity extends BaseActivity implements
             super.onPostExecute(result);
         }
     }
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        mCheckout.onActivityResult(requestCode, resultCode, data);
-
-    }*/
 
     private void ViewProfile(UserInfo userInfo) {
         txtNameDisplay.setText(userInfo.firs_name);
