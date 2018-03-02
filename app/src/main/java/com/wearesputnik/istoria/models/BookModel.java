@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.wearesputnik.istoria.helpers.Books;
+import com.wearesputnik.istoria.helpers.SyncBook;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,6 +74,10 @@ public class BookModel extends Model{
         bookModel.LastModified = item.last_modified;
         bookModel.isRaiting = false;
         bookModel.NewIstori = NewIstoriParametr(item.last_modified);
+        bookModel.BranchJsonEnd = null;
+        bookModel.BranchJson = null;
+        bookModel.BranchJsonSave = null;
+        bookModel.IsViewTapCount = null;
         bookModel.save();
     }
 
@@ -100,7 +105,7 @@ public class BookModel extends Model{
     public static List<Books> ListBooksIstori() {
         List<Books> booksList = new ArrayList<>();
         List<BookModel> bookModelList = new Select().from(BookModel.class).execute();
-        if (bookModelList != null) {
+        if (bookModelList != null && bookModelList.size() != 0) {
             for (BookModel item : bookModelList) {
                 Books itemAdapter = new Books();
                 itemAdapter.pathCoverFileStorage = item.getId().toString();
@@ -112,6 +117,7 @@ public class BookModel extends Model{
                 itemAdapter.pathCoverFileStorage = item.PathCoverFileStorage;
                 itemAdapter.raiting = item.Raiting;
                 itemAdapter.new_istori_int = NewIstoriParametr(item.LastModified);
+                itemAdapter.type_id = item.TypeId;
                 itemAdapter.flagGuest = false;
                 booksList.add(itemAdapter);
             }
@@ -140,5 +146,19 @@ public class BookModel extends Model{
         }
 
         return 1;
+    }
+
+    public static void SyncBookServ(List<SyncBook> syncBookList) {
+        for (SyncBook item : syncBookList) {
+            BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
+            if (bookModelOne != null) {
+                bookModelOne.IsView = item.is_view;
+                bookModelOne.IsViewTapCount = item.is_view_tap_count;
+                bookModelOne.BranchJsonSave = item.branch_json_save;
+                bookModelOne.BranchJson = item.branch_json;
+                bookModelOne.BranchJsonEnd = item.branch_json_end;
+                bookModelOne.save();
+            }
+        }
     }
 }

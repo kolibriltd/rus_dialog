@@ -11,6 +11,7 @@ public class UserInfo {
     public String app_key;
     public String firs_name;
     public String photo;
+    public Boolean subscription;
 
     public static UserInfo parseJson(JSONObject json) {
         UserInfo result = new UserInfo();
@@ -27,6 +28,9 @@ public class UserInfo {
             }
             if (json.has("photo")) {
                 result.photo = json.getString("photo");
+            }
+            if (json.has("subscription")) {
+                result.subscription = json.getBoolean("subscription");
             }
             return result;
         }

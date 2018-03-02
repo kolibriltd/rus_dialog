@@ -23,7 +23,7 @@
             android:value="IstoriaDB" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="8" />
+            android:value="9" />
         <meta-data
             android:name="AA_MODELS"
             android:value="com.wearesputnik.istoria.models.BookModel, com.wearesputnik.istoria.models.IstoriaInfo, com.wearesputnik.istoria.models.TypeBook, com.wearesputnik.istoria.models.UserModel" />
@@ -57,11 +57,6 @@
         <activity
             android:name=".activity.MapProgressActivity"
             android:screenOrientation="portrait" />
-
-        <service
-            android:name=".service.BooksService"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 </manifest>

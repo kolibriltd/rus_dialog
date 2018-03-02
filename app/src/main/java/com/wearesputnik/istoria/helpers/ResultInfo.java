@@ -14,6 +14,7 @@ public class ResultInfo {
     public String error;
     public UserInfo userInfoResult;
     public List<Books> booksList;
+    public SyncUser dataSync;
 
     public static ResultInfo parseJson(JSONObject json, String type) {
         ResultInfo result = new ResultInfo();
@@ -23,7 +24,15 @@ public class ResultInfo {
             result.error = json.getString("error");
             if (result.status == 0) {
                 if (type.trim().equals("login")) {
-                    result.userInfoResult = UserInfo.parseJson(json.getJSONObject("result"));
+                    JSONObject jsonObject = json.getJSONObject("result");
+                    result.userInfoResult = UserInfo.parseJson(jsonObject.getJSONObject("login"));
+                    if (jsonObject.has("dataSync")) {
+                        result.dataSync = SyncUser.parseJson(jsonObject.getJSONObject("dataSync"));
+                    }
+                    else {
+                        result.dataSync = null;
+                    }
+
                 }
                 if (type.trim().equals("listBook")) {
                     result.booksList = new ArrayList<>();
@@ -36,6 +45,9 @@ public class ResultInfo {
                             }
                         }
                     }
+                }
+                if (type.trim().equals("dataSync")) {
+                    result.dataSync = SyncUser.parseJson(json.getJSONObject("result"));
                 }
             }
             return result;

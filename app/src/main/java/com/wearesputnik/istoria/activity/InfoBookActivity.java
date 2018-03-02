@@ -45,11 +45,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InfoBookActivity extends BaseActivity {
-    TextView  txtDescription, txtAuthor, txtName, txtEve, txtRaiting;
+    TextView  txtDescription, txtAuthor, txtName, txtEve;
     Button btnNext, btnProgressMap;
     int id_book;
     RelativeLayout relInfoScreen1, relInfoScreen2, relGradient;
-    ImageView imageViewCoverInfo;
+    ImageView imageViewCoverInfo, imgMoney;
     BookModel bookModelOne;
     boolean twoScrean;
     boolean btnEndRead = false;
@@ -79,16 +79,18 @@ public class InfoBookActivity extends BaseActivity {
         txtAuthor = (TextView) findViewById(R.id.txtAuthor);
         txtName = (TextView) findViewById(R.id.txtName);
         txtEve = (TextView) findViewById(R.id.txtEve);
-        txtRaiting = (TextView) findViewById(R.id.txtRaiting);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnProgressMap = (Button) findViewById(R.id.btnProgressMap);
         imageViewCoverInfo = (ImageView) findViewById(R.id.imageViewCoverInfo);
         relGradient = (RelativeLayout) findViewById(R.id.relGradient);
+        imgMoney = (ImageView) findViewById(R.id.imgMoney);
 
         imageViewCoverInfo.setColorFilter(R.color.colorBlack);
 
         relInfoScreen2 = (RelativeLayout) findViewById(R.id.relInfoScreen2);
         relInfoScreen2.setVisibility(View.GONE);
+
+        imgMoney.setVisibility(View.GONE);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -134,6 +136,9 @@ public class InfoBookActivity extends BaseActivity {
         if (bookModelOne.TypeId == 1) {
             btnProgressMap.setVisibility(View.GONE);
         }
+        if (bookModelOne.TypeId == 3) {
+            imgMoney.setVisibility(View.VISIBLE);
+        }
 
         List<TextInfo> textInfoList = new ArrayList<>();
 
@@ -146,7 +151,7 @@ public class InfoBookActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        if (!textInfoList.isEmpty() && bookModelOne.TypeId == 2) {
+        if (!textInfoList.isEmpty() && (bookModelOne.TypeId == 2 || bookModelOne.TypeId == 3)) {
             MapProgresListSort(textInfoList);
         }
 
@@ -259,7 +264,6 @@ public class InfoBookActivity extends BaseActivity {
         txtAuthor.setText(result.author);
         txtName.setText(result.name);
         txtEve.setText(result.isViewCount + "");
-        txtRaiting.setText(result.raiting);
         if (result.pathCoverFileStorage != null) {
             imageViewCoverInfo.setImageURI(Uri.parse(result.pathCoverFileStorage));
         } else if (result.pathCoverFile != null) {

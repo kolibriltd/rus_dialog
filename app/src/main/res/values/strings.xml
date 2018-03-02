@@ -32,11 +32,15 @@
 
     <string name="google_accaunt">Войдите, используя аккаунт</string>
     <string name="loading">Загрузка…</string>
-    <string name="server_client_id">23708869862-jp76svc5tgafddp786o4g4tp9c7ceufk.apps.googleusercontent.com</string>
+    <string name="server_client_id">959777552825-0o8mrvmcoorv1k1q0p0ms0651oi4aktc.apps.googleusercontent.com</string>
 
     <string name="action_profile">Профиль</string>
 
     <string name="action_push_off">Отключить уведомления</string>
     <string name="action_push_on">Включить уведомления</string>
     <string name="action_loguot">Выйти</string>
+
+    <string name="no_internet">Отсутствует интернет подключение.\nПопробуйте в другой раз.</string>
+    <string name="no_login">Вы не залогинелись</string>
+    <string name="no_subscrition">Вы не оформили подписку.</string>
 </resources>

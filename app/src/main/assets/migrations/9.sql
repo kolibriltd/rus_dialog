@@ -1,0 +1,1 @@
+ALTER TABLE UserModel ADD COLUMN Subscription INTEGER;

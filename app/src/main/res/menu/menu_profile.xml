@@ -5,10 +5,12 @@
     <item android:id="@+id/menu_profile" android:title="@string/action_push_off"
         android:icon="@mipmap/ic_settings" android:visible="true" app:showAsAction="ifRoom">
         <menu>
-        <item android:id="@+id/action_push" android:title="@string/action_push_off"
-            android:orderInCategory="100" app:showAsAction="never" />
-        <item android:id="@+id/action_loguot" android:title="@string/action_loguot"
-            android:orderInCategory="100" app:showAsAction="never" />
+            <!--<item android:id="@+id/version_name" android:title="1.1"-->
+                <!--android:orderInCategory="100" app:showAsAction="never" />-->
+            <item android:id="@+id/action_push" android:title="@string/action_push_off"
+                android:orderInCategory="100" app:showAsAction="never" />
+            <item android:id="@+id/action_loguot" android:title="@string/action_loguot"
+                android:orderInCategory="100" app:showAsAction="never" />
         </menu>
     </item>
 </menu>

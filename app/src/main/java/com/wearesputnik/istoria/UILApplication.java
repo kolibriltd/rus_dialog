@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.onesignal.OneSignal;
+import com.wearesputnik.istoria.helpers.Config;
 import com.wearesputnik.istoria.helpers.HttpConnectClass;
 
 import org.solovyev.android.checkout.Billing;
@@ -30,7 +31,7 @@ public class UILApplication extends Application {
     private final Billing billing = new Billing(this, new Billing.DefaultConfiguration() {
         @Override
         public String getPublicKey() {
-            return "Your public key, don't forget abput encryption";
+            return Config.BASE64_PUBLIC_KEY;
         }
     });
 

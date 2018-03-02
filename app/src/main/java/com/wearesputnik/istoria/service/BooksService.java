@@ -31,8 +31,8 @@ public class BooksService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Toast.makeText(this, "Start Setrvice", Toast.LENGTH_SHORT).show();
-        BooksList books = new BooksList();
-        books.start();
+//        BooksList books = new BooksList();
+//        books.start();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -42,54 +42,54 @@ public class BooksService extends Service {
         super.onDestroy();
     }
 
-    private class BooksList extends Thread {
-        public boolean stopped = false;
-
-        public void run() {
-            try {
-                while (!stopped) {
-                    // Активность списка
-                    new getBooks().execute();
-
-                    try {
-                        Thread.sleep(500000);
-                    }
-                    catch (Exception e) {
-                    }
-                }
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    class getBooks extends AsyncTask<String, String, ResultInfo> {
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected ResultInfo doInBackground(String... strings) {
-            ResultInfo result = httpConect.getBooks(0, BooksService.this);
-            return result;
-        }
-
-        protected void onPostExecute(ResultInfo result) {
-            if (result != null) {
-                if (result.status == 0) {
-                    for (Books item : result.booksList) {
-                        BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
-                        if (bookModelOne != null) {
-                            BookModel.EditBook(item);
-                        }
-                        else {
-                            BookModel.AddBook(item);
-                        }
-                    }
-                }
-
-            }
-            super.onPostExecute(result);
-        }
-    }
+//    private class BooksList extends Thread {
+//        public boolean stopped = false;
+//
+//        public void run() {
+//            try {
+//                while (!stopped) {
+//                    // Активность списка
+//                    new getBooks().execute();
+//
+//                    try {
+//                        Thread.sleep(500000);
+//                    }
+//                    catch (Exception e) {
+//                    }
+//                }
+//            } catch (Exception e) {
+//            }
+//        }
+//    }
+//
+//    class getBooks extends AsyncTask<String, String, ResultInfo> {
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//        }
+//
+//        @Override
+//        protected ResultInfo doInBackground(String... strings) {
+//            ResultInfo result = httpConect.getBooks(0, BooksService.this);
+//            return result;
+//        }
+//
+//        protected void onPostExecute(ResultInfo result) {
+//            if (result != null) {
+//                if (result.status == 0) {
+//                    for (Books item : result.booksList) {
+//                        BookModel bookModelOne = new Select().from(BookModel.class).where("IdDbServer = ?", item.id_book).executeSingle();
+//                        if (bookModelOne != null) {
+//                            BookModel.EditBook(item);
+//                        }
+//                        else {
+//                            BookModel.AddBook(item);
+//                        }
+//                    }
+//                }
+//
+//            }
+//            super.onPostExecute(result);
+//        }
+//    }
 }

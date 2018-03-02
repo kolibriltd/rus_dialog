@@ -39,9 +39,6 @@ public class BooksAdapter extends ArrayAdapter<Books> {
         super(context, 0);
         booksList = new ArrayList<>();
         this.context = context;
-        if (UILApplication.AppKey == null) {
-            this.guestFlag = true;
-        }
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -54,18 +51,24 @@ public class BooksAdapter extends ArrayAdapter<Books> {
             ViewHolder holder = new ViewHolder();
             holder.txtName = (TextView) view.findViewById(R.id.txtName);
             holder.txtAuthor = (TextView) view.findViewById(R.id.txtAuthor);
-            holder.txtRaiting = (TextView) view.findViewById(R.id.txtRaiting);
             holder.imageViewCover = (ImageView) view.findViewById(R.id.imageViewCover);
             holder.imgStic = (ImageView) view.findViewById(R.id.imgStic);
+            holder.imgMoneyIc = (ImageView) view.findViewById(R.id.imgMoneyIc);
             holder.relItemListBook = (RelativeLayout) view.findViewById(R.id.relItemListBook);
+            holder.txtEye = (TextView) view.findViewById(R.id.txtEye);
             view.setTag(holder);
         }
 
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.relItemListBook.setVisibility(View.VISIBLE);
+        holder.imgMoneyIc.setVisibility(View.GONE);
         holder.txtName.setText(item.name);
         holder.txtAuthor.setText(item.author);
-        holder.txtRaiting.setText(item.raiting);
+        holder.txtEye.setText(item.isViewCount + "");
+
+        if (item.type_id == 3) {
+            holder.imgMoneyIc.setVisibility(View.VISIBLE);
+        }
 
         if (item.pathCoverFileStorage != null) {
             holder.imageViewCover.setImageURI(Uri.parse(item.pathCoverFileStorage));
@@ -88,39 +91,38 @@ public class BooksAdapter extends ArrayAdapter<Books> {
         }
 
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (guestFlag) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Ошибка")
-                            .setMessage("Вы не залогинелись")
-                            .setCancelable(false)
-                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
-                else {
-                    Intent intent = new Intent(context, InfoBookActivity.class);
-                    intent.putExtra("id_book", item.id_book);
-                    context.startActivity(intent);
-                }
-            }
-        });
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (guestFlag) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                    builder.setTitle("Ошибка")
+//                            .setMessage("Вы не залогинелись")
+//                            .setCancelable(false)
+//                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    dialogInterface.cancel();
+//                                }
+//                            });
+//                    AlertDialog alertDialog = builder.create();
+//                    alertDialog.show();
+//                }
+//                else {
+//                    Intent intent = new Intent(context, InfoBookActivity.class);
+//                    intent.putExtra("id_book", item.id_book);
+//                    context.startActivity(intent);
+//                }
+//            }
+//        });
 
         return view;
     }
 
     class ViewHolder {
         TextView txtAuthor;
-        TextView txtName;
-        TextView txtRaiting;
-        ImageView imageViewCover, imgStic;
+        TextView txtName, txtEye;
+        ImageView imageViewCover, imgStic, imgMoneyIc;
         RelativeLayout relItemListBook;
     }
 }

@@ -12,11 +12,14 @@ import com.wearesputnik.istoria.UILApplication;
 import com.wearesputnik.istoria.models.IstoriaInfo;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -28,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,7 +83,7 @@ public class HttpConnectClass {
             request.setEntity(formEntity);
             HttpResponse response = http.execute(request);
             String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("Login", jsonStr);
+            //Log.e("Login", jsonStr);
 
             JSONObject jsonObject = new JSONObject(jsonStr);
             result = ResultInfo.parseJson(jsonObject, "login");
@@ -119,6 +123,71 @@ public class HttpConnectClass {
         }
     }
 
+    public static ResultInfo setAccountSync(String data) {
+        ResultInfo resultInfo = new ResultInfo();
+        HttpPut request = new HttpPut(URL + "set_account_sync");
+        request.addHeader( "app_key", UILApplication.AppKey);
+
+        try {
+            request.setEntity(new StringEntity(data));
+
+            HttpResponse response = http.execute(request);
+            String jsonStr = streamToString(response.getEntity().getContent());
+
+            return resultInfo;
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static SyncUser getAccountSync() {
+        SyncUser resultInfo = new SyncUser();
+        HttpGet request = new HttpGet(URL + "get_account_sync");
+        request.addHeader( "app_key", UILApplication.AppKey);
+
+        try {
+            HttpResponse response = http.execute(request);
+            String jsonStr = streamToString(response.getEntity().getContent());
+            Log.e("Profile", jsonStr);
+
+            if (!jsonStr.equals("")) {
+                JSONObject jsonObject = new JSONObject(jsonStr);
+                resultInfo = SyncUser.parseJson(jsonObject.getJSONObject("result"));
+            }
+            else {
+                return null;
+            }
+            return resultInfo;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static void getSubscription(String packageName, String subscriptionId, String token, String signature) {
+        HttpGet request = new HttpGet("https://www.googleapis.com/androidpublisher/v2/applications/" + packageName + "/purchases/subscriptions/" + subscriptionId + "/tokens/" + token + "?access_token=" + signature);
+
+        try {
+            HttpResponse response = http.execute(request);
+            String jsonStr = streamToString(response.getEntity().getContent());
+            Log.e("Subscription", jsonStr);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static ResultInfo setNewAutor() {
         ResultInfo result = new ResultInfo();
 
@@ -145,46 +214,20 @@ public class HttpConnectClass {
         }
     }
 
-    public static Books getGuestBooks(int id_book) {
-        Books result = new Books();
-
-        HttpGet request = new HttpGet(URL + "guest_books");
-
-
-        try {
-            HttpResponse response = http.execute(request);
-            String jsonStr = streamToString(response.getEntity().getContent());
-            Log.e("GUEST", jsonStr);
-
-            if (!jsonStr.equals("")) {
-                JSONObject jsonObject = new JSONObject(jsonStr);
-                result = Books.parseJson(jsonObject.getJSONObject("result"));
-            }
-            else {
-                return null;
-            }
-            return result;
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
     public static ResultInfo getBooks(int id_book, Context context) {
         ResultInfo result = new ResultInfo();
-        PackageInfo packageInfo = null;
-
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+//        PackageInfo packageInfo = null;
+//
+//        try {
+//            packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
 
         HttpGet request = new HttpGet(URL + "list_books?id=" + id_book);
-        request.addHeader( "app_key", UILApplication.AppKey);
-        request.addHeader( "version_code", packageInfo.versionCode + "");
+//        request.addHeader( "app_key", UILApplication.AppKey);
+//        request.addHeader( "version_code", packageInfo.versionCode + "");
 
         try {
             HttpResponse response = http.execute(request);

@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,12 +34,24 @@ import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.UILApplication;
 import com.wearesputnik.istoria.adapters.BooksAdapter;
 import com.wearesputnik.istoria.helpers.Books;
+import com.wearesputnik.istoria.helpers.Config;
+import com.wearesputnik.istoria.helpers.HttpConnectClass;
 import com.wearesputnik.istoria.helpers.ResultInfo;
+import com.wearesputnik.istoria.helpers.SyncBook;
+import com.wearesputnik.istoria.helpers.SyncUser;
 import com.wearesputnik.istoria.helpers.UserInfo;
 import com.wearesputnik.istoria.models.BookModel;
 import com.wearesputnik.istoria.models.IstoriaInfo;
 import com.wearesputnik.istoria.models.UserModel;
+import com.wearesputnik.istoria.models.UtilitModel;
 import com.wearesputnik.istoria.service.BooksService;
+
+import org.solovyev.android.checkout.ActivityCheckout;
+import org.solovyev.android.checkout.Checkout;
+import org.solovyev.android.checkout.EmptyRequestListener;
+import org.solovyev.android.checkout.Inventory;
+import org.solovyev.android.checkout.ProductTypes;
+import org.solovyev.android.checkout.Purchase;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +63,7 @@ public class ListBookActivity extends BaseActivity  implements
     ImageView imgProfile;
     ImageView imgAutorNew;
     private static final int RC_SIGN_IN = 9001;
+    private boolean isSubscription = false;
 
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
@@ -57,6 +71,34 @@ public class ListBookActivity extends BaseActivity  implements
     Boolean getListBookGuest = false;
 
     private View mLayout;
+
+    private class PurchaseListener extends EmptyRequestListener<Purchase> {
+        @Override
+        public void onSuccess(Purchase result) {
+            super.onSuccess(result);
+            if (result.sku.equals(Config.SUB_SKY_NAME)) {
+
+            }
+        }
+    }
+
+    private class InventoryCallback implements Inventory.Callback {
+        @Override
+        public void onLoaded(Inventory.Products products) {
+            final Inventory.Product product = products.get(ProductTypes.SUBSCRIPTION);
+            if (product.getSku(Config.SUB_SKY_NAME) != null) {
+                String priceP = product.getSku(Config.SUB_SKY_NAME).price;
+            }
+            if (product.isPurchased(Config.SUB_SKY_NAME)) {
+                isSubscription = true;
+                UserModel.UserSubscrition(true);
+                //readPurchase(list.);
+            }
+        }
+    }
+
+    private final ActivityCheckout mCheckout = Checkout.forActivity(this, UILApplication.getInstance().getBilling());
+    private Inventory mInventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +117,17 @@ public class ListBookActivity extends BaseActivity  implements
         GridView listBooks = (GridView) findViewById(R.id.listBooks);
         booksAdapter = new BooksAdapter(ListBookActivity.this);
         listBooks.setAdapter(booksAdapter);
-
-        new getBooks().execute();
-
-        if (!isMyServiceRunning(BooksService.class)) {
-            startService(new Intent(ListBookActivity.this, BooksService.class));
+        if (HttpConnectClass.isOnline(ListBookActivity.this)) {
+            new getBooks().execute();
+        }
+        else {
+            List<Books> booksList = BookModel.ListBooksIstori();
+            if (booksList == null) {
+                UtilitModel.DialogError(ListBookActivity.this, R.string.no_internet);
+            }
+            else {
+                ViewListBooks();
+            }
         }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -106,10 +154,26 @@ public class ListBookActivity extends BaseActivity  implements
             }
         });
 
+        listBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Books item = booksAdapter.getItem(position);
+                if (UILApplication.AppKey == null) {
+                    UtilitModel.DialogError(ListBookActivity.this, R.string.no_login);
+                }
+                else {
+                    Intent intent = new Intent(ListBookActivity.this, InfoBookActivity.class);
+                    intent.putExtra("id_book", item.id_book);
+                    startActivity(intent);
+                }
+            }
+        });
+
         IstoriaInfo istoriaInfo = new Select().from(IstoriaInfo.class).where("Id=?", 1).executeSingle();
         if (istoriaInfo != null) {
             if (istoriaInfo.AppKey != null) {
                 imgProfile.setVisibility(View.VISIBLE);
+                imgProfile.setImageResource(R.mipmap.ic_foto_profile_sm);
                 UserInfo userInfo = UserModel.SelectUser();
                 if (userInfo != null) {
                     if (!userInfo.photo.trim().equals("")) {
@@ -118,6 +182,18 @@ public class ListBookActivity extends BaseActivity  implements
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(imgProfile);
                     }
+                    else {
+                        imgProfile.setImageResource(R.mipmap.ic_foto_profile_sm);
+                    }
+                    mCheckout.start();
+
+                    mCheckout.createPurchaseFlow(new ListBookActivity.PurchaseListener());
+
+                    mInventory = mCheckout.makeInventory();
+                    mInventory.load(Inventory.Request.create()
+                        .loadAllPurchases()
+                        .loadSkus(ProductTypes.SUBSCRIPTION, Config.SUB_SKY_NAME), new ListBookActivity.InventoryCallback());
+                    new setSyncUserTask().execute();
                 }
                 getListBookGuest = false;
             }
@@ -139,22 +215,25 @@ public class ListBookActivity extends BaseActivity  implements
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean isMyServiceRunning(Class<?> serviceClass) {
+//        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
+//            if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     @Override
     protected void onRestart() {
         super.onRestart();
 
         List<Books> booksList = BookModel.ListBooksIstori();
-        if (booksList.size() == 0) {
+        if (booksList == null) {
+            if (!booksAdapter.isEmpty()) {
+                booksAdapter.clear();
+            }
             new getBooks().execute();
         }
         else {
@@ -165,15 +244,20 @@ public class ListBookActivity extends BaseActivity  implements
         if (istoriaInfo != null) {
             if (istoriaInfo.AppKey != null) {
                 imgProfile.setVisibility(View.VISIBLE);
+                imgProfile.setImageResource(R.mipmap.ic_foto_profile_sm);
                 UserInfo userInfo = UserModel.SelectUser();
                 if (userInfo != null) {
                     if (!userInfo.photo.trim().equals("")) {
                         Glide.with(ListBookActivity.this)
-                                .load(userInfo.photo)
-                                .apply(RequestOptions.circleCropTransform())
-                                .into(imgProfile);
+                            .load(userInfo.photo)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(imgProfile);
                     }
                 }
+                else {
+                    imgProfile.setImageResource(R.mipmap.ic_foto_profile_sm);
+                }
+                new setSyncUserTask().execute();
                 getListBookGuest = false;
             }
             else {
@@ -343,7 +427,7 @@ public class ListBookActivity extends BaseActivity  implements
             //Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
-        } else {
+        } /*else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
@@ -355,7 +439,7 @@ public class ListBookActivity extends BaseActivity  implements
                     handleSignInResult(googleSignInResult);
                 }
             });
-        }
+        }*/
     }
 
     @Override
@@ -375,6 +459,8 @@ public class ListBookActivity extends BaseActivity  implements
             userInfo.email = acct.getEmail();
             userInfo.firs_name = acct.getDisplayName();
             userInfo.app_key = acct.getServerAuthCode();
+            userInfo.subscription = isSubscription;
+            
             if (acct.getPhotoUrl() != null) {
                 userInfo.photo = acct.getPhotoUrl().toString();
             }
@@ -399,6 +485,7 @@ public class ListBookActivity extends BaseActivity  implements
 
     @Override
     protected void onDestroy() {
+        mCheckout.stop();
         super.onDestroy();
         ///stopService(new Intent(ListBookActivity.this, BooksService.class));
     }
@@ -447,9 +534,10 @@ public class ListBookActivity extends BaseActivity  implements
                 if (result.status == 0) {
                     UILApplication.AppKey = result.userInfoResult.app_key;
                     IstoriaInfo.AddEditIstoriInfo(result.userInfoResult);
-                    if (getListBookGuest) {
-                        onRestart();
+                    if (result.dataSync != null) {
+                        BookModel.SyncBookServ(result.dataSync.syncBookList);
                     }
+                    onRestart();
                 }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListBookActivity.this);
@@ -465,6 +553,22 @@ public class ListBookActivity extends BaseActivity  implements
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }
+            }
+            super.onPostExecute(result);
+        }
+    }
+
+    class setSyncUserTask extends AsyncTask<String, String, ResultInfo> {
+
+        @Override
+        protected ResultInfo doInBackground(String... userInfo) {
+            ResultInfo result = httpConect.setAccountSync(SyncUser.jsonGeneration());
+            return result;
+        }
+
+        protected void onPostExecute(ResultInfo result) {
+            if (result != null) {
+
             }
             super.onPostExecute(result);
         }

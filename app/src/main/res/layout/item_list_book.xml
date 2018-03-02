@@ -51,6 +51,7 @@
                 android:textStyle="italic" />
 
             <RelativeLayout
+                android:id="@+id/relativeLayout5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/txtAuthor"
@@ -60,23 +61,31 @@
                 android:paddingBottom="3dp">
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/imageView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/ic_rating" />
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@mipmap/eye" />
 
                 <TextView
-                    android:id="@+id/txtRaiting"
+                    android:id="@+id/txtEye"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:text="5.0"
-                    android:textColor="@color/colorWite"
-                    android:textSize="14dp" />
-
+                    android:layout_centerHorizontal="true"
+                    android:text="7"
+                    android:textColor="@color/colorWite" />
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgMoneyIc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@mipmap/money_ic" />
 
         </RelativeLayout>
     </RelativeLayout>
