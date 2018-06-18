@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 24
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -21,11 +21,9 @@ android {
         applicationId "com.wearesputnik.istoria"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 29
-        versionName "1.9"
-        manifestPlaceholders = [onesignal_app_id               : "6307d53a-2b11-4026-9825-47e2e44da0eb",
-                                // Project number pulled from dashboard, local value is ignored.
-                                onesignal_google_project_number: "959777552825"]
+        versionCode 30
+        versionName "1.9.1"
+        manifestPlaceholders = [onesignal_app_id : "6307d53a-2b11-4026-9825-47e2e44da0eb", onesignal_google_project_number: "959777552825"]
     }
     buildTypes {
         release {
@@ -43,21 +41,20 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':imageloader')
-    compile files('libs/YouTubeAndroidPlayerApi.jar')
-    compile 'com.onesignal:OneSignal:3.+@aar'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.google.android.gms:play-services-auth:11.0.4'
-    compile 'com.google.android.gms:play-services-gcm:11.0.4'
-    compile 'com.google.android.gms:play-services-analytics:11.0.4'
-    compile 'org.solovyev.android:checkout:1.0.1@aar'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.bumptech.glide:glide:4.0.0'
-    compile 'com.android.support.constraint:constraint-layout:+'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.onesignal:OneSignal:3.+@aar'
+    implementation 'com.android.support:appcompat-v7:24.2.1'
+    implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    implementation 'com.android.support:design:24.2.1'
+    implementation 'com.android.support:support-v4:24.2.1'
+    implementation 'com.google.android.gms:play-services-auth:11.0.4'
+    implementation 'com.google.android.gms:play-services-gcm:11.0.4'
+    implementation 'com.google.android.gms:play-services-analytics:11.0.4'
+    implementation 'org.solovyev.android:checkout:1.0.1@aar'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.bumptech.glide:glide:4.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }
 
 apply plugin: 'com.google.gms.google-services'

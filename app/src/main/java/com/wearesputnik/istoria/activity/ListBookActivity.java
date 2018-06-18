@@ -535,7 +535,7 @@ public class ListBookActivity extends BaseActivity  implements
                     UILApplication.AppKey = result.userInfoResult.app_key;
                     IstoriaInfo.AddEditIstoriInfo(result.userInfoResult);
                     if (result.dataSync != null) {
-                        BookModel.SyncBookServ(result.dataSync.syncBookList);
+                        //BookModel.SyncBookServ(result.dataSync.syncBookList);
                     }
                     onRestart();
                 }

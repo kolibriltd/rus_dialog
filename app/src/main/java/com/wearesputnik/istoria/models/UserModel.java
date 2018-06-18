@@ -16,6 +16,8 @@ public class UserModel extends Model{
     public String Photo;
     @Column(name = "Subscription")
     public Boolean Subscription;
+    @Column(name = "Points")
+    public Integer Points;
 
     public static void AddEditUser(UserInfo userInfo) {
         UserModel userModel = new Select().from(UserModel.class).where("Id=?", 1).executeSingle();
@@ -71,5 +73,21 @@ public class UserModel extends Model{
         else {
             return null;
         }
+    }
+
+    public static void setPointUser(int points) {
+        UserModel userModel = new Select().from(UserModel.class).where("Id=?", 1).executeSingle();
+        if (userModel != null) {
+            userModel.Points = points;
+            userModel.save();
+        }
+    }
+
+    public static Integer getPointUser() {
+        UserModel userModel = new Select().from(UserModel.class).where("Id=?", 1).executeSingle();
+        if (userModel != null) {
+            return userModel.Points;
+        }
+        return null;
     }
 }

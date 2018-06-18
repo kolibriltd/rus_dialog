@@ -1,24 +1,15 @@
 package com.wearesputnik.istoria;
 
 import android.app.Application;
-import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.activeandroid.ActiveAndroid;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.onesignal.OneSignal;
 import com.wearesputnik.istoria.helpers.Config;
 import com.wearesputnik.istoria.helpers.HttpConnectClass;
 
 import org.solovyev.android.checkout.Billing;
-import org.solovyev.android.checkout.Cache;
-import org.solovyev.android.checkout.Checkout;
-import org.solovyev.android.checkout.Inventory;
 
 public class UILApplication extends Application {
     private static UILApplication mInstance;
@@ -53,34 +44,16 @@ public class UILApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ActiveAndroid.initialize(this);
 
         OneSignal.startInit(this)
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
 
-        ActiveAndroid.initialize(this);
-        initImageLoader(getApplicationContext());
-
         billing.connect();
 
-        //sAnalytics = GoogleAnalytics.getInstance(this);
-
         mInstance = this;
-    }
-
-    public static void initImageLoader(Context context) {
-        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
-        config.threadPoolSize(3);
-        config.threadPriority(Thread.NORM_PRIORITY - 2);
-        config.tasksProcessingOrder(QueueProcessingType.FIFO);
-        config.denyCacheImageMultipleSizesInMemory();
-        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
-        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
-        //config.tasksProcessingOrder(QueueProcessingType.LIFO);
-        config.writeDebugLogs(); // Remove for release app
-
-        ImageLoader.getInstance().init(config.build());
     }
 
     public static synchronized UILApplication getInstance() {

@@ -3,7 +3,9 @@ package com.wearesputnik.istoria.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
@@ -20,20 +22,18 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.engine.Resource;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Picasso;
 import com.wearesputnik.istoria.R;
 import com.wearesputnik.istoria.activity.YoutubeActivity;
 import com.wearesputnik.istoria.helpers.Config;
 import com.wearesputnik.istoria.helpers.HttpConnectClass;
 import com.wearesputnik.istoria.helpers.TextInfo;
+import com.wearesputnik.istoria.jsonHelper.ContentTxt;
+import com.wearesputnik.istoria.jsonHelper.NamePeople;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,33 +46,22 @@ import java.util.logging.LogRecord;
 /**
  * Created by admin on 05.06.17.
  */
-public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
-    List<TextInfo> textInfoList;
+public class ItemBookAdapter extends ArrayAdapter<ContentTxt> {
+    List<ContentTxt> textInfoList;
     Context context;
-    String nameA, nameB;
+    NamePeople namePeople;
     MediaPlayer mediaPlayer;
     Handler myHandler = new Handler();
-    private DisplayImageOptions options;
 
-    public ItemBookAdapter (Context context, String nameA, String nameB) {
+    public ItemBookAdapter (Context context, NamePeople namePeople) {
         super(context, 0);
         textInfoList = new ArrayList<>();
         this.context = context;
-        this.nameA = nameA;
-        this.nameB = nameB;
-        options = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.mipmap.null_foto)
-            .showImageForEmptyUri(R.mipmap.null_foto)
-            .showImageOnFail(R.mipmap.null_foto)
-            .cacheInMemory(true)
-            .cacheOnDisk(true)
-            .considerExifParams(true)
-            .bitmapConfig(Bitmap.Config.RGB_565)
-            .build();
+        this.namePeople = namePeople;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        final TextInfo item = getItem(position);
+        final ContentTxt item = getItem(position);
 
         View view = convertView;
         if (view == null) {
@@ -98,23 +87,17 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
             holder.txtImageNameA = (TextView) view.findViewById(R.id.txtImageNameA);
             holder.imgPeopleA = (ImageView) view.findViewById(R.id.imgPeopleA);
 
-            holder.relImageB = (RelativeLayout) view.findViewById(R.id.relImageB);
-            holder.txtImageNameB = (TextView) view.findViewById(R.id.txtImageNameB);
             holder.imgPeopleB = (ImageView) view.findViewById(R.id.imgPeopleB);
 
-            holder.relVideoB = (RelativeLayout) view.findViewById(R.id.relVideoB);
             holder.youtube_view = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail);
-            holder.txtVideoNameB = (TextView) view.findViewById(R.id.txtVideoNameB);
 
             holder.relVideoA = (RelativeLayout) view.findViewById(R.id.relVideoA);
             holder.youtube_view_a = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail_a);
             holder.txtVideoNameA = (TextView) view.findViewById(R.id.txtVideoNameA);
 
-            holder.relAudioB = (RelativeLayout) view.findViewById(R.id.relAudioB);
             holder.imgButnPlay = (ImageButton) view.findViewById(R.id.imgButnPlay);
             holder.durationMp = (SeekBar) view.findViewById(R.id.durationMp);
             holder.txtCurrentPos = (TextView) view.findViewById(R.id.txtCurrentPos);
-            holder.txtAudioNameB = (TextView) view.findViewById(R.id.txtAudioNameB);
 
             holder.relAudioA = (RelativeLayout) view.findViewById(R.id.relAudioA);
             holder.imgButnPlayA = (ImageButton) view.findViewById(R.id.imgButnPlayA);
@@ -127,10 +110,10 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         final ViewHolder holder = (ViewHolder) view.getTag();
 
         holder.relImageA.setVisibility(View.GONE);
-        holder.relImageB.setVisibility(View.GONE);
+        holder.imgPeopleB.setVisibility(View.GONE);
         holder.relPeopleA.setVisibility(View.GONE);
         holder.relPeopleB.setVisibility(View.GONE);
-        holder.relVideoB.setVisibility(View.GONE);
+        holder.youtube_view.setVisibility(View.GONE);
         holder.relVideoA.setVisibility(View.GONE);
         holder.relAudioA.setVisibility(View.GONE);
         holder.relAudioB.setVisibility(View.GONE);
@@ -142,7 +125,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
             holder.relPeopleA.setVisibility(View.VISIBLE);
 
             holder.txtPeopleA.setText(item.peopleA);
-            holder.txtNamePeopleA.setText(this.nameA);
+            holder.txtNamePeopleA.setText(this.namePeople.nameA);
             if (!item.flags) {
                 StartAnimation(holder.relPeopleA);
             }
@@ -171,7 +154,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
             });
 
             ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleA, holder.imgPeopleA);
-            holder.txtImageNameA.setText(this.nameA);
+            holder.txtImageNameA.setText(namePeople.nameA);
             if (!item.flags) {
                 StartAnimation(holder.relImageA);
             }
@@ -215,7 +198,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
                 }
             });
 
-            holder.txtVideoNameA.setText(this.nameA);
+            holder.txtVideoNameA.setText(namePeople.nameA);
             if (!item.flags) {
                 StartAnimation(holder.relImageA);
             }
@@ -223,16 +206,17 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         if (item.peopleB != null) {
             holder.relPeopleB.setVisibility(View.VISIBLE);
 
-            holder.txtPeopleB.setText(item.peopleB);
-            holder.txtNamePeopleB.setText(this.nameB);
+            holder.txtPeopleB.setText(item.peopleB.message);
+            holder.txtNamePeopleB.setText(namePeople.nameB.get(item.peopleB.indexName).nameB);
+            holder.txtNamePeopleB.setTextColor(Color.parseColor(colorPeopleB(item.peopleB.indexName)));
             if (!item.flags) {
                 StartAnimation(holder.relPeopleB);
             }
         }
         if (item.imgPeopleB != null) {
-            holder.relImageB.setVisibility(View.VISIBLE);
+            holder.imgPeopleB.setVisibility(View.VISIBLE);
 
-            holder.relImageB.setOnClickListener(new View.OnClickListener() {
+            holder.imgPeopleB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final Dialog dialog = new Dialog(context);
@@ -240,7 +224,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
                     dialog.setContentView(R.layout.dialog_photo_book);
                     ImageView imgPhotoBook = (ImageView) dialog.findViewById(R.id.imgPhotoBook);
 
-                    ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleB, imgPhotoBook);
+                    ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleB.message, imgPhotoBook);
 
                     imgPhotoBook.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -252,14 +236,15 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
                 }
             });
 
-            ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleB, holder.imgPeopleB);
-            holder.txtImageNameB.setText(this.nameB);
+            ImageLoaderView(HttpConnectClass.URL_IMAGE + item.imgPeopleB.message, holder.imgPeopleB);
+            holder.txtNamePeopleB.setText(namePeople.nameB.get(item.peopleB.indexName).nameB);
+            holder.txtNamePeopleB.setTextColor(Color.parseColor(colorPeopleB(item.peopleB.indexName)));
             if (!item.flags) {
-                StartAnimation(holder.relImageB);
+                StartAnimation(holder.relPeopleB);
             }
         }
         if (item.videoPeopleB != null) {
-            holder.relVideoB.setVisibility(View.VISIBLE);
+            holder.youtube_view.setVisibility(View.VISIBLE);
 
             final YouTubeThumbnailLoader.OnThumbnailLoadedListener  onThumbnailLoadedListener = new YouTubeThumbnailLoader.OnThumbnailLoadedListener(){
                 @Override
@@ -278,7 +263,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
                 @Override
                 public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
 
-                    youTubeThumbnailLoader.setVideo(item.videoPeopleB);
+                    youTubeThumbnailLoader.setVideo(item.videoPeopleB.message);
                     youTubeThumbnailLoader.setOnThumbnailLoadedListener(onThumbnailLoadedListener);
                 }
 
@@ -292,24 +277,27 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, YoutubeActivity.class);
-                    intent.putExtra("video", item.videoPeopleB);
+                    intent.putExtra("video", item.videoPeopleB.message);
                     context.startActivity(intent);
                 }
             });
 
-            holder.txtVideoNameB.setText(this.nameB);
+            holder.txtNamePeopleB.setText(namePeople.nameB.get(item.peopleB.indexName).nameB);
+            holder.txtNamePeopleB.setTextColor(Color.parseColor(colorPeopleB(item.peopleB.indexName)));
             if (!item.flags) {
-                StartAnimation(holder.relImageB);
+                StartAnimation(holder.relPeopleB);
             }
         }
         if (item.audioPeopleB != null) {
             holder.relAudioB.setVisibility(View.VISIBLE);
-            holder.txtAudioNameB.setText(nameB);
+            holder.txtNamePeopleB.setText(namePeople.nameB.get(item.peopleB.indexName).nameB);
+            holder.txtNamePeopleB.setTextColor(Color.parseColor(colorPeopleB(item.peopleB.indexName)));
+
             releaseMP();
 
             try {
                 mediaPlayer = new MediaPlayer();
-                mediaPlayer.setDataSource(HttpConnectClass.URL_IMAGE + item.audioPeopleB);
+                mediaPlayer.setDataSource(HttpConnectClass.URL_IMAGE + item.audioPeopleB.message);
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaPlayer.prepareAsync();
             } catch (IOException e) {
@@ -335,7 +323,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         }
         if (item.audioPeopleA != null) {
             holder.relAudioA.setVisibility(View.VISIBLE);
-            holder.txtAudioNameA.setText(nameA);
+            holder.txtAudioNameA.setText(namePeople.nameA);
             releaseMP();
 
             try {
@@ -376,7 +364,7 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         if (item.callPeopleB != null) {
             holder.relDescAB.setVisibility(View.VISIBLE);
 
-            holder.txtDescAB.setText(this.nameB + " сбросил(-а) вызов");
+            holder.txtDescAB.setText(" сбросил(-а) вызов");
             if (!item.flags) {
                 StartAnimation(holder.relDescAB);
             }
@@ -407,6 +395,18 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
         item.flags = true;
 
         return view;
+    }
+
+    private String colorPeopleB (Integer indexName) {
+        String resColor = "e81f3e";
+        if (indexName != 0) {
+            for (int i = 0; i < resColor.length(); i++) {
+                if (i == (indexName - 1)) {
+                    resColor.indexOf(indexName.toString(), i);
+                }
+            }
+        }
+        return "#" + resColor;
     }
 
     private void releaseMP() {
@@ -448,43 +448,22 @@ public class ItemBookAdapter extends ArrayAdapter<TextInfo> {
 
     }
 
+    public void ImageLoaderView(String url_img, ImageView imageView) {
+        Picasso.with(context)
+            .load(url_img)
+            .error(R.mipmap.null_foto)
+            .into(imageView);
+    }
+
     class ViewHolder {
         TextView txtPeopleA, txtNamePeopleA, txtImageNameA, txtVideoNameA, txtAudioNameA;
-        TextView txtPeopleB, txtNamePeopleB, txtImageNameB, txtVideoNameB, txtAudioNameB;
+        TextView txtPeopleB, txtNamePeopleB;
         TextView txtDescAB;
         ImageButton imgButnPlay, imgButnPlayA;
         TextView txtCurrentPos, txtCurrentPosA;
         SeekBar durationMp, durationMpA;
         ImageView imgPeopleB, imgPeopleA;
-        RelativeLayout relPeopleA,relPeopleB, relDescAB, relEnd, relEmty, relImageB, relImageA, relVideoB, relVideoA, relAudioB, relAudioA;
+        RelativeLayout relPeopleA,relPeopleB, relDescAB, relEnd, relEmty, relImageA, relVideoA, relAudioB, relAudioA;
         YouTubeThumbnailView youtube_view, youtube_view_a;
-    }
-
-    public void ImageLoaderView(String url_img, ImageView imageView) {
-        ImageLoader.getInstance()
-                .displayImage(url_img, imageView, options, new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    }
-                }, new ImageLoadingProgressListener() {
-                    @Override
-                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
-
-                    }
-                });
-//        Picasso.with(context)
-//            .load(url_img)
-//            .error(R.mipmap.null_foto)
-//            .into(imageView);
     }
 }

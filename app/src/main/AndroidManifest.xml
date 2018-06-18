@@ -23,7 +23,7 @@
             android:value="IstoriaDB" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="9" />
+            android:value="10" />
         <meta-data
             android:name="AA_MODELS"
             android:value="com.wearesputnik.istoria.models.BookModel, com.wearesputnik.istoria.models.IstoriaInfo, com.wearesputnik.istoria.models.TypeBook, com.wearesputnik.istoria.models.UserModel" />
@@ -53,9 +53,6 @@
         <activity android:name=".activity.YoutubeActivity" />
         <activity
             android:name=".activity.ProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MapProgressActivity"
             android:screenOrientation="portrait" />
     </application>
 

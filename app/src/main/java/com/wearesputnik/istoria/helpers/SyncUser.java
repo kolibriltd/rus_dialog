@@ -2,6 +2,7 @@ package com.wearesputnik.istoria.helpers;
 
 import com.activeandroid.query.Select;
 import com.wearesputnik.istoria.models.BookModel;
+import com.wearesputnik.istoria.models.UserModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +49,7 @@ public class SyncUser {
     public static String jsonGeneration() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("points", 0);
+            jsonObject.put("points", UserModel.getPointUser());
             jsonObject.put("status", "status");
 
             JSONArray jsonArray = new JSONArray();

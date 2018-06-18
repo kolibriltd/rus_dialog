@@ -15,11 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.wearesputnik.istoria.BaseActivity;
 import com.wearesputnik.istoria.R;
-import com.wearesputnik.istoria.UILApplication;
-import com.wearesputnik.istoria.activity.InfoBookActivity;
 import com.wearesputnik.istoria.helpers.Books;
 import com.wearesputnik.istoria.helpers.HttpConnectClass;
 

@@ -18,4 +18,5 @@
     <color name="colorBlack">#000000</color>
     <color name="colorNull">@null</color>
     <color name="colorBackroundProfile">#1b1b1b</color>
+    <color name="colorNamePeopleB">#e81f3e</color>
 </resources>
